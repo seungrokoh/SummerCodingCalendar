@@ -1,10 +1,12 @@
 package toy.project.davidoh.summercodingcalendar.ui.calendar
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_calendar.*
 import toy.project.davidoh.summercodingcalendar.R
+import toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.MonthlyFragment
+import toy.project.davidoh.summercodingcalendar.util.replaceFragment
 
 class CalendarActivity : AppCompatActivity() {
 
@@ -27,6 +29,7 @@ class CalendarActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calendar)
 
+        replaceFragment(R.id.fl_container, MonthlyFragment.newInstance())
         bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 }
