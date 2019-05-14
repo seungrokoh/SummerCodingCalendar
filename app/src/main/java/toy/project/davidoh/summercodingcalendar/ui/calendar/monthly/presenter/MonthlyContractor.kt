@@ -1,5 +1,8 @@
 package toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.presenter
 
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import java.util.ArrayList
+
 interface MonthlyContractor {
     interface View {
         fun showProgress()
@@ -12,9 +15,10 @@ interface MonthlyContractor {
         fun navigateToWeekly()
         fun navigateToDaily()
         fun navigateToAdd()
+        fun showSchedules(schedules: ArrayList<CalendarDay>)
     }
 
     interface Presenter {
-
+        fun loadSechedules()
     }
 }
