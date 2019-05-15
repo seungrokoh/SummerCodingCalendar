@@ -1,28 +1,37 @@
 package toy.project.davidoh.summercodingcalendar.data.source.local
 
 import com.prolificinteractive.materialcalendarview.CalendarDay
-import org.threeten.bp.LocalDate
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import toy.project.davidoh.summercodingcalendar.data.Schedule
 import toy.project.davidoh.summercodingcalendar.data.source.SchedulesDataSource
 
-class SchedulesLocalDataSource : SchedulesDataSource {
-//    val dummy = arrayListOf(
-//        Schedule("1", "title1", "desc1", LocalDate.of(2019,5,14)),
-//        Schedule("2", "title2", "desc2", LocalDate.of(2019,5,14)),
-//        Schedule("3", "title3", "desc3", LocalDate.of(2019,5,12)),
-//        Schedule("4", "title4", "desc4", LocalDate.of(2019,5,23)),
-//        Schedule("5", "title5", "desc5", LocalDate.of(2019,5,21)))
-
-    val dummy = arrayListOf<CalendarDay>(
-        CalendarDay.from(LocalDate.of(2019,5,14)),
-        CalendarDay.from(LocalDate.of(2019,5,3)),
-        CalendarDay.from(LocalDate.of(2019,5,12)),
-        CalendarDay.from(LocalDate.of(2019,5,23)),
-        CalendarDay.from(LocalDate.of(2019,5,21))
-    )
+class SchedulesLocalDataSource(private val schedulesDao: SchedulesDao) : SchedulesDataSource {
 
     override fun getSchedules(callback: SchedulesDataSource.LoadSchedulesCallback) {
-        callback.onSchedulesLoaded(dummy)
+        CoroutineScope(Dispatchers.IO).launch {
+            callback.onSchedulesLoaded(schedulesDao.getAllSchedules())
+        }
+    }
+
+    override fun addSchedule(date: CalendarDay, title: String, description: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            schedulesDao.addSchedule(Schedule(title = title, description = description, date = date))
+        }
+    }
+
+    companion object {
+        private var INSTANCE: SchedulesLocalDataSource? = null
+
+        fun getInstance(schedulesDao: SchedulesDao) : SchedulesLocalDataSource {
+            if (INSTANCE == null) {
+                synchronized(SchedulesLocalDataSource::class) {
+                    INSTANCE = SchedulesLocalDataSource(schedulesDao)
+                }
+            }
+            return INSTANCE!!
+        }
     }
 
 }
