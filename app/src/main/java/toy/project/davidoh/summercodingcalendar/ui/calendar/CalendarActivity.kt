@@ -3,11 +3,13 @@ package toy.project.davidoh.summercodingcalendar.ui.calendar
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_calendar.*
 import toy.project.davidoh.summercodingcalendar.R
+import toy.project.davidoh.summercodingcalendar.`interface`.FragmentChangeCallback
+import toy.project.davidoh.summercodingcalendar.util.replaceFragment
 
-class CalendarActivity : AppCompatActivity() {
-
+class CalendarActivity : AppCompatActivity(), FragmentChangeCallback {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
@@ -28,5 +30,13 @@ class CalendarActivity : AppCompatActivity() {
         setContentView(R.layout.activity_calendar)
 
         bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        fab_add_schedule.setOnClickListener {
+//            replaceFragment(R.id.fl_container, AddScheduleDialog())
+        }
+    }
+
+    override fun onReplaceFragment(fragment: Fragment, tag: String?) {
+        replaceFragment(R.id.fl_container, fragment, tag)
     }
 }
