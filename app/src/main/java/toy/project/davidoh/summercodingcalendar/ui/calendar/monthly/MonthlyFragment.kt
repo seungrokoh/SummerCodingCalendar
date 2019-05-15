@@ -15,6 +15,7 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_monthly.*
 import org.threeten.bp.LocalDate
 import toy.project.davidoh.summercodingcalendar.R
+import toy.project.davidoh.summercodingcalendar.data.source.SchedulesRepository
 import toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.presenter.MonthlyContractor
 import toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.presenter.MonthlyPresenter
 import toy.project.davidoh.summercodingcalendar.util.EventDecorator
@@ -33,7 +34,7 @@ class MonthlyFragment : Fragment(),
         }
     }
     private val monthlyPresenter: MonthlyPresenter by lazy {
-        MonthlyPresenter(this)
+        MonthlyPresenter(this, SchedulesRepository)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
