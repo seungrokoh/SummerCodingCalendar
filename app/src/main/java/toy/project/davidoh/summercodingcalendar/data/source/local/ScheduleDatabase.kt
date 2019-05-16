@@ -8,9 +8,8 @@ import androidx.room.TypeConverters
 import toy.project.davidoh.summercodingcalendar.data.Schedule
 import toy.project.davidoh.summercodingcalendar.util.Converters
 
-@Database(entities = [Schedule::class], version = 2)
+@Database(entities = [Schedule::class], version = 1)
 @TypeConverters(Converters::class)
-
 abstract class ScheduleDatabase : RoomDatabase() {
     abstract fun SchedulesDao(): SchedulesDao
 

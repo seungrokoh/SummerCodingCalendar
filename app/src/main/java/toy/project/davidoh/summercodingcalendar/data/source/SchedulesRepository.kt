@@ -2,7 +2,6 @@ package toy.project.davidoh.summercodingcalendar.data.source
 
 import toy.project.davidoh.summercodingcalendar.data.Schedule
 import toy.project.davidoh.summercodingcalendar.data.source.local.SchedulesLocalDataSource
-import toy.project.davidoh.summercodingcalendar.util.logE
 
 class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDataSource)
     : SchedulesDataSource {
@@ -12,13 +11,11 @@ class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDa
 
     override fun getSchedulesAllDay(callback: SchedulesDataSource.LoadSchedulesCallback) {
         if (cachedSchedules.isNotEmpty() && !cacheIsDirty) {
-            logE("캐시가 변하지 않음")
             callback.onSchedulesLoaded(ArrayList(cachedSchedules.values))
             return
         }
 
         if (cacheIsDirty) {
-            logE("캐시가 변함")
             schedulesLocalDataSource.getSchedulesAllDay(object : SchedulesDataSource.LoadSchedulesCallback {
                 override fun onSchedulesLoaded(schedules: List<Schedule>) {
                     refreshCache(schedules)
