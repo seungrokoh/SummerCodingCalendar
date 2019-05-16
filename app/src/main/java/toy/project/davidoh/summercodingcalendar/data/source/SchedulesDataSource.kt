@@ -1,5 +1,6 @@
 package toy.project.davidoh.summercodingcalendar.data.source
 
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import toy.project.davidoh.summercodingcalendar.data.Schedule
 
 interface SchedulesDataSource {
@@ -16,6 +17,8 @@ interface SchedulesDataSource {
     }
 
     fun getSchedulesAllDay(callback: LoadSchedulesCallback)
+
+    fun getScheduleOnDay(date: CalendarDay, callback: LoadSchedulesCallback)
 
     fun addSchedule(schedule: Schedule, callback: InsertScheduleCallback)
 

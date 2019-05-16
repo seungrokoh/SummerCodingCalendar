@@ -9,15 +9,18 @@ import toy.project.davidoh.summercodingcalendar.R
 import toy.project.davidoh.summercodingcalendar.listener.FragmentChangeCallback
 import toy.project.davidoh.summercodingcalendar.ui.add.AddScheduleDialog
 import toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.MonthlyFragment
+import toy.project.davidoh.summercodingcalendar.ui.calendar.weekly.WeeklyFragment
 import toy.project.davidoh.summercodingcalendar.util.replaceFragment
 
 class CalendarActivity : AppCompatActivity(), FragmentChangeCallback {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
+                replaceFragment(R.id.fl_container, MonthlyFragment.newInstance())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
+                replaceFragment(R.id.fl_container, WeeklyFragment.getInstance())
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
