@@ -4,10 +4,16 @@ import com.prolificinteractive.materialcalendarview.CalendarDay
 
 interface WeeklyContractor {
     interface View {
+        fun showSuccessMessage(message: String)
+        fun showInfoMessage(message: String)
+        fun showErrorMesage(message: String)
 
+        fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>)
     }
 
     interface Presenter {
         fun loadScheduleOnDay(date: CalendarDay)
+
+        fun loadScheduleAllDay()
     }
 }

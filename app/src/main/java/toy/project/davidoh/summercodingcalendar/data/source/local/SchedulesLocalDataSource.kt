@@ -1,5 +1,6 @@
 package toy.project.davidoh.summercodingcalendar.data.source.local
 
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -9,8 +10,32 @@ import toy.project.davidoh.summercodingcalendar.data.source.SchedulesDataSource
 
 class SchedulesLocalDataSource(private val schedulesDao: SchedulesDao) : SchedulesDataSource {
     override fun getSchedulesAllDay(callback: SchedulesDataSource.LoadSchedulesCallback) {
-        CoroutineScope(Dispatchers.IO).launch {
-            callback.onSchedulesLoaded(schedulesDao.getAllSchedules())
+        CoroutineScope(Dispatchers.Default).launch {
+            var result: List<Schedule>? = null
+            CoroutineScope(Dispatchers.IO).async {
+                result = schedulesDao.getAllSchedules()
+            }.await()
+            if (result != null && result?.size!! > 0) {
+                callback.onSchedulesLoaded(schedulesDao.getAllSchedules())
+            } else {
+                callback.onDataNotAvailable()
+            }
+        }
+
+    }
+
+    override fun getScheduleOnDay(date: CalendarDay, callback: SchedulesDataSource.LoadSchedulesCallback) {
+        CoroutineScope(Dispatchers.Default).launch {
+            var result: List<Schedule>? = null
+            CoroutineScope(Dispatchers.IO).async {
+                result = schedulesDao.getSchedulesOnDay(date)
+            }.await()
+
+            if (result != null && result?.size!! > 0) {
+                callback.onSchedulesLoaded(result!!)
+            } else {
+                callback.onDataNotAvailable()
+            }
         }
     }
 

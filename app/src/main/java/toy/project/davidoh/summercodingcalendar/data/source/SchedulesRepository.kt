@@ -1,5 +1,6 @@
 package toy.project.davidoh.summercodingcalendar.data.source
 
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import toy.project.davidoh.summercodingcalendar.data.Schedule
 import toy.project.davidoh.summercodingcalendar.data.source.local.SchedulesLocalDataSource
 import toy.project.davidoh.summercodingcalendar.util.logE
@@ -11,14 +12,10 @@ class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDa
     var cacheIsDirty = false
 
     override fun getSchedulesAllDay(callback: SchedulesDataSource.LoadSchedulesCallback) {
+        logE("getSchedulesAllDay -> cachedSchedules : ${cachedSchedules.values}")
         if (cachedSchedules.isNotEmpty() && !cacheIsDirty) {
-            logE("캐시가 변하지 않음")
             callback.onSchedulesLoaded(ArrayList(cachedSchedules.values))
-            return
-        }
-
-        if (cacheIsDirty) {
-            logE("캐시가 변함")
+        } else {
             schedulesLocalDataSource.getSchedulesAllDay(object : SchedulesDataSource.LoadSchedulesCallback {
                 override fun onSchedulesLoaded(schedules: List<Schedule>) {
                     refreshCache(schedules)
@@ -31,7 +28,24 @@ class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDa
 
             })
         }
+    }
 
+    override fun getScheduleOnDay(date: CalendarDay, callback: SchedulesDataSource.LoadSchedulesCallback) {
+        if (cachedSchedules.isNotEmpty() && !cacheIsDirty) {
+            callback.onSchedulesLoaded(cachedSchedules.values.filter { it.date == date }.toList())
+        } else {
+            schedulesLocalDataSource.getScheduleOnDay(date, object : SchedulesDataSource.LoadSchedulesCallback {
+                override fun onSchedulesLoaded(schedules: List<Schedule>) {
+                    refreshCache(schedules)
+                    callback.onSchedulesLoaded(cachedSchedules.values.filter { it.date == date }.toList())
+                }
+
+                override fun onDataNotAvailable() {
+                    callback.onDataNotAvailable()
+                }
+
+            })
+        }
     }
 
     override fun addSchedule(schedule: Schedule, callback: SchedulesDataSource.InsertScheduleCallback) {
