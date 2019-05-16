@@ -2,18 +2,34 @@ package toy.project.davidoh.summercodingcalendar.ui.add.presenter
 
 import android.text.TextUtils
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import toy.project.davidoh.summercodingcalendar.data.Schedule
+import toy.project.davidoh.summercodingcalendar.data.source.SchedulesDataSource
 import toy.project.davidoh.summercodingcalendar.data.source.SchedulesRepository
 
-class AddSchedulePresenter (private var view: AddScheduleContractor.View?,
-                            private val schedulesRepository: SchedulesRepository)
-    : AddScheduleContractor.Presenter {
+class AddSchedulePresenter(
+    private var view: AddScheduleContractor.View?,
+    private val schedulesRepository: SchedulesRepository
+) : AddScheduleContractor.Presenter {
     override fun addSchedule(date: CalendarDay, title: String, description: String) {
         if (isEmpty(date, title, description)) {
-            schedulesRepository.addSchedule(date, title, description)
+            schedulesRepository.addSchedule(Schedule(
+                title = title,
+                description = description,
+                date = date
+            ), object : SchedulesDataSource.InsertScheduleCallback {
+                override fun onScheduleInserted() {
+                    // UI update
+//                    view?.onInserted()
+                }
+
+                override fun onInsertFailed() {
+//                    view?.onInsertFailed()
+                }
+            })
         }
     }
 
-    private fun isEmpty(date: CalendarDay?, title: String?, description: String?) : Boolean{
+    private fun isEmpty(date: CalendarDay?, title: String?, description: String?): Boolean {
         if (date == null) {
             view?.showInfoMessage("날짜를 선택해주세요.")
             return false

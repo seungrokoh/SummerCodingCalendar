@@ -11,6 +11,6 @@ import toy.project.davidoh.summercodingcalendar.data.Schedule
     fun getAllSchedules() : List<Schedule>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addSchedule(schedule: Schedule)
+    fun addSchedule(schedule: Schedule): Long
 
 }

@@ -23,7 +23,6 @@ import toy.project.davidoh.summercodingcalendar.util.nowDate
 
 
 class AddScheduleDialog : DialogFragment(), AddScheduleContractor.View, CompoundButton.OnCheckedChangeListener{
-
     private val addSchedulePresenter: AddSchedulePresenter by lazy {
         AddSchedulePresenter(this,
                 SchedulesRepository.getInstance(
@@ -63,7 +62,6 @@ class AddScheduleDialog : DialogFragment(), AddScheduleContractor.View, Compound
 
     }
 
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return object : Dialog(activity, theme) {
             override fun onBackPressed() {
@@ -71,6 +69,7 @@ class AddScheduleDialog : DialogFragment(), AddScheduleContractor.View, Compound
             }
         }
     }
+
 
     override fun showSuccessMessage(message: String) {
         Toasty.success(context!!, message, Toast.LENGTH_SHORT).show()
