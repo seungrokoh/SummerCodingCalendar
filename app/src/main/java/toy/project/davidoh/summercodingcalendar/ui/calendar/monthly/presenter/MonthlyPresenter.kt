@@ -1,34 +1,34 @@
 package toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.presenter
 
 import com.prolificinteractive.materialcalendarview.CalendarDay
-import org.threeten.bp.LocalDate
 import toy.project.davidoh.summercodingcalendar.data.Schedule
 import toy.project.davidoh.summercodingcalendar.data.source.SchedulesDataSource
 import toy.project.davidoh.summercodingcalendar.data.source.SchedulesRepository
-import java.util.ArrayList
+import toy.project.davidoh.summercodingcalendar.util.logE
 
 class MonthlyPresenter(private val view: MonthlyContractor.View,
-                       private val repository: SchedulesRepository)
+                       private val schedulesRepository: SchedulesRepository)
     : MonthlyContractor.Presenter {
-    override fun loadSechedules() {
-//        var temp = LocalDate.now().minusMonths(2)
-//        val dates = ArrayList<CalendarDay>()
-//        for (i in 0..29) {
-//            val day = CalendarDay.from(temp)
-//            dates.add(day)
-//            temp = temp.plusDays(5)
-//        }
 
-        repository.getSchedules(object : SchedulesDataSource.LoadSchedulesCallback {
-            override fun onSchedulesLoaded(scheduls: ArrayList<CalendarDay>) {
-                view.showSchedules(scheduls)
+    override fun loadSechedules() {
+        schedulesRepository.getSchedulesAllDay(object : SchedulesDataSource.LoadSchedulesCallback {
+            override fun onSchedulesLoaded(schedules: List<Schedule>) {
+                addDotDecorator(schedules)
             }
 
             override fun onDataNotAvailable() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                view.showInfoMessage("일정이 없습니다.")
             }
         })
 
+    }
+
+    private fun addDotDecorator(schedules: List<Schedule>) {
+        val dateList = mutableListOf<CalendarDay>()
+        for (item in schedules) {
+            dateList.add(item.date)
+        }
+        view.showDecorateOnCalendar(dateList)
     }
 
 }

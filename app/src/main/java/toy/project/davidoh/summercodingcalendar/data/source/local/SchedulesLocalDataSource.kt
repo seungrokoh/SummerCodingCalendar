@@ -15,6 +15,7 @@ class SchedulesLocalDataSource(private val schedulesDao: SchedulesDao) : Schedul
             CoroutineScope(Dispatchers.IO).async {
                 result = schedulesDao.getAllSchedules()
             }.await()
+          
             if (result != null && result?.size!! > 0) {
                 callback.onSchedulesLoaded(schedulesDao.getAllSchedules())
             } else {
@@ -37,6 +38,7 @@ class SchedulesLocalDataSource(private val schedulesDao: SchedulesDao) : Schedul
                 callback.onDataNotAvailable()
             }
         }
+
     }
 
     override fun addSchedule(schedule: Schedule, callback: SchedulesDataSource.InsertScheduleCallback) {

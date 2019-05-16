@@ -3,7 +3,6 @@ package toy.project.davidoh.summercodingcalendar.data.source
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import toy.project.davidoh.summercodingcalendar.data.Schedule
 import toy.project.davidoh.summercodingcalendar.data.source.local.SchedulesLocalDataSource
-import toy.project.davidoh.summercodingcalendar.util.logE
 
 class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDataSource)
     : SchedulesDataSource {
