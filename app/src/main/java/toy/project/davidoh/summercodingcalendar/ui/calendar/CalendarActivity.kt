@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.activity_calendar.*
 import toy.project.davidoh.summercodingcalendar.Global.cachedFragment
 import toy.project.davidoh.summercodingcalendar.R
 import toy.project.davidoh.summercodingcalendar.ui.add.AddScheduleDialog
+import toy.project.davidoh.summercodingcalendar.ui.calendar.daily.DailyFragment
 import toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.MonthlyFragment
 import toy.project.davidoh.summercodingcalendar.ui.calendar.weekly.WeeklyFragment
 import toy.project.davidoh.summercodingcalendar.util.replaceFragment
@@ -23,6 +24,7 @@ class CalendarActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
+                replaceFragment(R.id.fl_container, DailyFragment.getInstance())
                 return@OnNavigationItemSelectedListener true
             }
         }
