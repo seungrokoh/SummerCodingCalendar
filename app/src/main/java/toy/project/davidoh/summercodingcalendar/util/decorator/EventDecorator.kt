@@ -1,10 +1,10 @@
-package toy.project.davidoh.summercodingcalendar.util
+package toy.project.davidoh.summercodingcalendar.util.decorator
 
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
-import java.util.HashSet
+import java.util.*
 
 class EventDecorator(private val color: Int, dates: Collection<CalendarDay>) : DayViewDecorator {
     private val dates: HashSet<CalendarDay> = HashSet(dates)
@@ -14,6 +14,6 @@ class EventDecorator(private val color: Int, dates: Collection<CalendarDay>) : D
     }
 
     override fun decorate(view: DayViewFacade) {
-        view.addSpan(DotSpan(5f, color))
+        view.addSpan(DotSpan(8f, color))
     }
 }
