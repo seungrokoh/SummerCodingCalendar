@@ -10,4 +10,6 @@ object Global {
         get() = field ?: CalendarDay.from(nowLocalDate())
 
     var cachedFragment: Fragment = MonthlyFragment.getInstance()
+
+    var isSplash = false
 }
