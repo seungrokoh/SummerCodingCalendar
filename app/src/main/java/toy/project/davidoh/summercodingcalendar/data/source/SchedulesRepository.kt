@@ -11,7 +11,6 @@ class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDa
     var cacheIsDirty = false
 
     override fun getSchedulesAllDay(callback: SchedulesDataSource.LoadSchedulesCallback) {
-        logE("getSchedulesAllDay -> cachedSchedules : ${cachedSchedules.values}")
         if (cachedSchedules.isNotEmpty() && !cacheIsDirty) {
             callback.onSchedulesLoaded(ArrayList(cachedSchedules.values))
         } else {
@@ -29,11 +28,11 @@ class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDa
         }
     }
 
-    override fun getScheduleOnDay(date: CalendarDay, callback: SchedulesDataSource.LoadSchedulesCallback) {
+    override fun getSchedulesOnDay(date: CalendarDay, callback: SchedulesDataSource.LoadSchedulesCallback) {
         if (cachedSchedules.isNotEmpty() && !cacheIsDirty) {
             callback.onSchedulesLoaded(cachedSchedules.values.filter { it.date == date }.toList())
         } else {
-            schedulesLocalDataSource.getScheduleOnDay(date, object : SchedulesDataSource.LoadSchedulesCallback {
+            schedulesLocalDataSource.getSchedulesOnDay(date, object : SchedulesDataSource.LoadSchedulesCallback {
                 override fun onSchedulesLoaded(schedules: List<Schedule>) {
                     refreshCache(schedules)
                     callback.onSchedulesLoaded(cachedSchedules.values.filter { it.date == date }.toList())

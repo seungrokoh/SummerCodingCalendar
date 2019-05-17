@@ -10,23 +10,22 @@ import toy.project.davidoh.summercodingcalendar.data.source.SchedulesDataSource
 
 class SchedulesLocalDataSource(private val schedulesDao: SchedulesDao) : SchedulesDataSource {
     override fun getSchedulesAllDay(callback: SchedulesDataSource.LoadSchedulesCallback) {
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             var result: List<Schedule>? = null
             CoroutineScope(Dispatchers.IO).async {
                 result = schedulesDao.getAllSchedules()
             }.await()
-          
+
             if (result != null && result?.size!! > 0) {
                 callback.onSchedulesLoaded(schedulesDao.getAllSchedules())
             } else {
                 callback.onDataNotAvailable()
             }
         }
-
     }
 
-    override fun getScheduleOnDay(date: CalendarDay, callback: SchedulesDataSource.LoadSchedulesCallback) {
-        CoroutineScope(Dispatchers.Default).launch {
+    override fun getSchedulesOnDay(date: CalendarDay, callback: SchedulesDataSource.LoadSchedulesCallback) {
+        CoroutineScope(Dispatchers.IO).launch {
             var result: List<Schedule>? = null
             CoroutineScope(Dispatchers.IO).async {
                 result = schedulesDao.getSchedulesOnDay(date)
