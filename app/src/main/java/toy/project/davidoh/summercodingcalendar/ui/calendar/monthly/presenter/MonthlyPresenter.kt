@@ -4,20 +4,19 @@ import com.prolificinteractive.materialcalendarview.CalendarDay
 import toy.project.davidoh.summercodingcalendar.data.Schedule
 import toy.project.davidoh.summercodingcalendar.data.source.SchedulesDataSource
 import toy.project.davidoh.summercodingcalendar.data.source.SchedulesRepository
-import toy.project.davidoh.summercodingcalendar.util.logE
 
 class MonthlyPresenter(private val view: MonthlyContractor.View,
                        private val schedulesRepository: SchedulesRepository)
     : MonthlyContractor.Presenter {
 
-    override fun loadSechedules() {
+    override fun loadSchedulesAllDay() {
         schedulesRepository.getSchedulesAllDay(object : SchedulesDataSource.LoadSchedulesCallback {
             override fun onSchedulesLoaded(schedules: List<Schedule>) {
                 addDotDecorator(schedules)
             }
 
             override fun onDataNotAvailable() {
-                view.showInfoMessage("일정이 없습니다.")
+                // Nothing...
             }
         })
 

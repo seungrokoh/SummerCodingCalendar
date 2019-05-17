@@ -8,72 +8,50 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
-import com.prolificinteractive.materialcalendarview.OnMonthChangedListener
 import es.dmoral.toasty.Toasty
-import kotlinx.android.synthetic.main.fragment_monthly.*
+import kotlinx.android.synthetic.main.include_calendar.*
+import toy.project.davidoh.summercodingcalendar.Global.cachedFragment
+import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
 import toy.project.davidoh.summercodingcalendar.R
-import toy.project.davidoh.summercodingcalendar.data.Schedule
-import toy.project.davidoh.summercodingcalendar.data.source.SchedulesRepository
-import toy.project.davidoh.summercodingcalendar.data.source.local.ScheduleDatabase
-import toy.project.davidoh.summercodingcalendar.data.source.local.SchedulesLocalDataSource
 import toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.presenter.MonthlyContractor
 import toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.presenter.MonthlyPresenter
-import toy.project.davidoh.summercodingcalendar.util.EventDecorator
+import toy.project.davidoh.summercodingcalendar.util.Injection
+import toy.project.davidoh.summercodingcalendar.util.decorator.EventDecorator
 import toy.project.davidoh.summercodingcalendar.util.logE
-import toy.project.davidoh.summercodingcalendar.util.nowDate
-import java.util.*
 
 class MonthlyFragment : Fragment(),
-    MonthlyContractor.View,
-    OnDateSelectedListener,
-    OnMonthChangedListener {
-    companion object {
+        MonthlyContractor.View,
+        OnDateSelectedListener {
 
-        fun newInstance(): MonthlyFragment {
-            return MonthlyFragment()
-        }
-    }
-
-    private val monthlyPresenter: MonthlyPresenter by lazy {
+    private val monthlyPresenter: MonthlyContractor.Presenter by lazy {
         MonthlyPresenter(
-            this,
-            SchedulesRepository.getInstance(
-                SchedulesLocalDataSource.getInstance(
-                    ScheduleDatabase.getInstance(context!!).SchedulesDao()
-                )
-            )
+                this,
+                Injection.provideTaskRepository(activity?.applicationContext!!)
         )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.fragment_monthly, container, false)
+            inflater.inflate(R.layout.fragment_monthly, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        cacheFragment()
         initWidget()
+
+        monthlyPresenter.loadSchedulesAllDay()
     }
 
     private fun initWidget() {
-        mcv_monthly.apply {
+        material_claendar.setViewInit(CalendarMode.MONTHS).apply {
             setOnDateChangedListener(this@MonthlyFragment)
-            state().edit().setMinimumDate(CalendarDay.from(2018, 10, 1)).commit()
-            setTitleFormatter { calendarDay -> "${calendarDay.month}월" }
-            setOnMonthChangedListener(this@MonthlyFragment)
-            selectionColor = resources.getColor(R.color.colorAccent)
-            setSelectedDate(nowDate())
         }
-        monthlyPresenter.loadSechedules()
     }
 
-    override fun showProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun hideProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun cacheFragment() {
+        cachedFragment = this
     }
 
     override fun showSuccessMessage(message: String) {
@@ -88,24 +66,28 @@ class MonthlyFragment : Fragment(),
         Toasty.error(context!!, message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun navigateToWeekly() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun navigateToDaily() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>) {
         logE(schedules.toString())
-        mcv_monthly.addDecorator(EventDecorator(Color.RED, schedules))
+        material_claendar.addDecorator(
+                EventDecorator(
+                        Color.RED,
+                        schedules
+                )
+        )
     }
 
     override fun onDateSelected(widget: MaterialCalendarView, date: CalendarDay, selected: Boolean) {
-        logE("onDateSelected : date : $date")
+        cachedSelectedDate = date
     }
 
-    override fun onMonthChanged(widget: MaterialCalendarView?, date: CalendarDay?) {
-        logE("onMonthChanged")
+    companion object {
+        private var INSTANCE: MonthlyFragment? = null
+
+        fun getInstance(): MonthlyFragment {
+            if (INSTANCE == null) {
+                return MonthlyFragment()
+            }
+            return INSTANCE!!
+        }
     }
 }

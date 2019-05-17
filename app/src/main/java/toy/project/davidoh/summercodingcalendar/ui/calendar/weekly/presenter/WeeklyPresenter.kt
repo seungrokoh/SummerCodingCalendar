@@ -17,8 +17,8 @@ class WeeklyPresenter(private val view: WeeklyContractor.View,
         }
     }
 
-    override fun loadScheduleOnDay(date: CalendarDay) {
-        schedulesRepository.getScheduleOnDay(date, object : SchedulesDataSource.LoadSchedulesCallback {
+    override fun getSchedulesOnDay(date: CalendarDay) {
+        schedulesRepository.getSchedulesOnDay(date, object : SchedulesDataSource.LoadSchedulesCallback {
             override fun onSchedulesLoaded(schedules: List<Schedule>) {
                 scheduleModel.clear()
                 schedules.forEach {
@@ -28,19 +28,19 @@ class WeeklyPresenter(private val view: WeeklyContractor.View,
             }
 
             override fun onDataNotAvailable() {
-                view.showInfoMessage("등록된 일정이 없습니다.")
+                // Nothing...
             }
         })
     }
 
-    override fun loadScheduleAllDay() {
+    override fun loadSchedulesAllDay() {
         schedulesRepository.getSchedulesAllDay(object : SchedulesDataSource.LoadSchedulesCallback {
             override fun onSchedulesLoaded(schedules: List<Schedule>) {
                 addDotDecorator(schedules)
             }
 
             override fun onDataNotAvailable() {
-                view.showInfoMessage("일정이 없습니다.")
+                // Nothing...
             }
         })
     }

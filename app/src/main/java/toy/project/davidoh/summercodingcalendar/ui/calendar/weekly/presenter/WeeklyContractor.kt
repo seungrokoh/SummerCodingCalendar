@@ -12,8 +12,8 @@ interface WeeklyContractor {
     }
 
     interface Presenter {
-        fun loadScheduleOnDay(date: CalendarDay)
+        fun loadSchedulesAllDay()
 
-        fun loadScheduleAllDay()
+        fun getSchedulesOnDay(date: CalendarDay)
     }
 }

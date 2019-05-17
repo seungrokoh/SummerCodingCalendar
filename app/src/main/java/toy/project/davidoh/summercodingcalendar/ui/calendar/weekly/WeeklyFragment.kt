@@ -13,51 +13,49 @@ import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import es.dmoral.toasty.Toasty
-import kotlinx.android.synthetic.main.fragment_monthly.*
 import kotlinx.android.synthetic.main.fragment_weekly.*
+import kotlinx.android.synthetic.main.include_calendar.*
+import toy.project.davidoh.summercodingcalendar.Global.cachedFragment
+import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
 import toy.project.davidoh.summercodingcalendar.R
-import toy.project.davidoh.summercodingcalendar.data.source.SchedulesRepository
-import toy.project.davidoh.summercodingcalendar.data.source.local.ScheduleDatabase
-import toy.project.davidoh.summercodingcalendar.data.source.local.SchedulesLocalDataSource
 import toy.project.davidoh.summercodingcalendar.ui.calendar.adapter.SchedulesListAdapter
+import toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.MonthlyFragment
 import toy.project.davidoh.summercodingcalendar.ui.calendar.weekly.presenter.WeeklyContractor
 import toy.project.davidoh.summercodingcalendar.ui.calendar.weekly.presenter.WeeklyPresenter
-import toy.project.davidoh.summercodingcalendar.util.EventDecorator
 import toy.project.davidoh.summercodingcalendar.util.Injection
-import toy.project.davidoh.summercodingcalendar.util.logE
-import toy.project.davidoh.summercodingcalendar.util.nowDate
+import toy.project.davidoh.summercodingcalendar.util.decorator.EventDecorator
 
 class WeeklyFragment : Fragment(), WeeklyContractor.View,
-        OnDateSelectedListener {
+    OnDateSelectedListener {
+
     private val weeklyPresenter: WeeklyContractor.Presenter by lazy {
-        WeeklyPresenter(this,
-                schedulesAdapter,
-                Injection.provideTaskRepository(activity?.applicationContext!!))
+        WeeklyPresenter(
+            this,
+            schedulesAdapter,
+            Injection.provideTaskRepository(activity?.applicationContext!!)
+        )
     }
 
     private val schedulesAdapter: SchedulesListAdapter by lazy {
         SchedulesListAdapter(this@WeeklyFragment.context!!)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(R.layout.fragment_weekly, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater.inflate(R.layout.fragment_weekly, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        cacheFragment()
         widgetInit()
-        weeklyPresenter.loadScheduleAllDay()
+
+        weeklyPresenter.loadSchedulesAllDay()
+        weeklyPresenter.getSchedulesOnDay(cachedSelectedDate!!)
     }
 
     private fun widgetInit() {
-        mcv_weekly.apply {
-            state().edit()
-                    .setMinimumDate(CalendarDay.from(2018, 10, 1))
-                    .setCalendarDisplayMode(CalendarMode.WEEKS)
-                    .commit()
-            setTitleFormatter { calendarDay -> "${calendarDay.year}년 ${calendarDay.month}월" }
-            selectionColor = resources.getColor(R.color.colorAccent)
+
+        material_claendar.setViewInit(CalendarMode.WEEKS).apply {
             setOnDateChangedListener(this@WeeklyFragment)
-            setSelectedDate(nowDate())
         }
 
         rv_schedules.apply {
@@ -66,6 +64,9 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
         }
     }
 
+    private fun cacheFragment() {
+        cachedFragment = this
+    }
 
     override fun showSuccessMessage(message: String) {
         Toasty.success(context!!, message, Toast.LENGTH_SHORT).show()
@@ -80,12 +81,17 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
     }
 
     override fun onDateSelected(widget: MaterialCalendarView, date: CalendarDay, selected: Boolean) {
-        weeklyPresenter.loadScheduleOnDay(date)
+        cachedSelectedDate = date
+        weeklyPresenter.getSchedulesOnDay(cachedSelectedDate!!)
     }
 
     override fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>) {
-//        logE(schedules.toString())
-        mcv_weekly.addDecorator(EventDecorator(Color.RED, schedules))
+        material_claendar.addDecorator(
+            EventDecorator(
+                Color.RED,
+                schedules
+            )
+        )
     }
 
     companion object {
@@ -93,11 +99,7 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
 
         fun getInstance(): WeeklyFragment {
             if (INSTANCE == null) {
-                synchronized(WeeklyFragment::class) {
-                    if (INSTANCE == null) {
-                        INSTANCE = WeeklyFragment()
-                    }
-                }
+                return WeeklyFragment()
             }
             return INSTANCE!!
         }
