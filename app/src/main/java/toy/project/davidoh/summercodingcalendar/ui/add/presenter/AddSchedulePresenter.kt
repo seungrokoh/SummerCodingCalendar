@@ -11,6 +11,8 @@ class AddSchedulePresenter(
     private val schedulesRepository: SchedulesRepository
 ) : AddScheduleContractor.Presenter {
     override fun addSchedule(date: CalendarDay, title: String, description: String) {
+        view?.showProgress()
+        view?.setAddButtonEnable(false)
         if (isEmpty(date, title, description)) {
             schedulesRepository.addSchedule(Schedule(
                 title = title,
@@ -18,12 +20,14 @@ class AddSchedulePresenter(
                 date = date
             ), object : SchedulesDataSource.InsertScheduleCallback {
                 override fun onScheduleInserted() {
-                    // UI update
-//                    view?.onInserted()
+                    view?.setAddButtonEnable(true)
+                    view?.dialogDismiss()
+                    view?.hideProgress()
                 }
 
                 override fun onInsertFailed() {
-//                    view?.onInsertFailed()
+                    view?.setAddButtonEnable(true)
+                    view?.hideProgress()
                 }
             })
         }

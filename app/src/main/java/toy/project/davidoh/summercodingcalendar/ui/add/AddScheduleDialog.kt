@@ -11,30 +11,24 @@ import androidx.fragment.app.DialogFragment
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
 import es.dmoral.toasty.Toasty
-import kotlinx.android.synthetic.main.fragment_add_schedule.*
-import kotlinx.android.synthetic.main.fragment_add_schedule.view.*
+import kotlinx.android.synthetic.main.dialog_add_schedule.*
+import kotlinx.android.synthetic.main.dialog_add_schedule.view.*
 import toy.project.davidoh.summercodingcalendar.R
-import toy.project.davidoh.summercodingcalendar.data.source.SchedulesRepository
-import toy.project.davidoh.summercodingcalendar.data.source.local.ScheduleDatabase
-import toy.project.davidoh.summercodingcalendar.data.source.local.SchedulesLocalDataSource
 import toy.project.davidoh.summercodingcalendar.ui.add.presenter.AddScheduleContractor
 import toy.project.davidoh.summercodingcalendar.ui.add.presenter.AddSchedulePresenter
-import toy.project.davidoh.summercodingcalendar.util.nowDate
+import toy.project.davidoh.summercodingcalendar.util.Injection
+import toy.project.davidoh.summercodingcalendar.util.nowLocalDate
 
 
 class AddScheduleDialog : DialogFragment(), AddScheduleContractor.View, CompoundButton.OnCheckedChangeListener{
     private val addSchedulePresenter: AddSchedulePresenter by lazy {
         AddSchedulePresenter(this,
-                SchedulesRepository.getInstance(
-                        SchedulesLocalDataSource.getInstance(
-                                ScheduleDatabase.getInstance(context!!).SchedulesDao()
-                        )
-                )
+                Injection.provideTaskRepository(activity?.applicationContext!!)
         )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
-            = inflater.inflate(R.layout.fragment_add_schedule, container, false)
+            = inflater.inflate(R.layout.dialog_add_schedule, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,7 +42,7 @@ class AddScheduleDialog : DialogFragment(), AddScheduleContractor.View, Compound
             state().edit()
                     .setMinimumDate(CalendarDay.from(2018, 10, 1))
                     .setCalendarDisplayMode(CalendarMode.WEEKS).commit()
-            setSelectedDate(nowDate())
+            setSelectedDate(nowLocalDate())
         }
 
         switch_mode.setOnCheckedChangeListener(this)
@@ -57,7 +51,6 @@ class AddScheduleDialog : DialogFragment(), AddScheduleContractor.View, Compound
             addSchedulePresenter.addSchedule(view.mcv_add.selectedDate!!,
                     view.et_title.text.toString(),
                     view.et_description.text.toString())
-            dialogDismiss()
         }
 
     }
@@ -70,10 +63,18 @@ class AddScheduleDialog : DialogFragment(), AddScheduleContractor.View, Compound
         }
     }
 
+    override fun showProgress() {
+        pb_add.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        pb_add.visibility = View.GONE
+    }
 
     override fun showSuccessMessage(message: String) {
         Toasty.success(context!!, message, Toast.LENGTH_SHORT).show()
     }
+
 
     override fun showInfoMessage(message: String) {
         Toasty.info(context!!, message, Toast.LENGTH_SHORT).show()
@@ -86,6 +87,10 @@ class AddScheduleDialog : DialogFragment(), AddScheduleContractor.View, Compound
     override fun dialogDismiss() {
         INSTANCE = null
         this.dismiss()
+    }
+
+    override fun setAddButtonEnable(enable: Boolean) {
+        btn_add_schedule.isEnabled = enable
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
