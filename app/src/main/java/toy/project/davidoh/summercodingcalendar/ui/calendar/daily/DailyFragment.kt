@@ -40,6 +40,10 @@ class DailyFragment : Fragment(), DailyContractor.View {
         super.onViewCreated(view, savedInstanceState)
         cacheFragment()
         widgetInit()
+    }
+
+    override fun onResume() {
+        super.onResume()
         dailyPresenter.getSchedulesOnDay()
     }
 

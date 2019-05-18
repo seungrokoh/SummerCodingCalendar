@@ -49,7 +49,10 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
         super.onViewCreated(view, savedInstanceState)
         cacheFragment()
         widgetInit()
+    }
 
+    override fun onResume() {
+        super.onResume()
         weeklyPresenter.loadSchedulesAllDay()
         weeklyPresenter.getSchedulesOnDay(cachedSelectedDate!!)
     }

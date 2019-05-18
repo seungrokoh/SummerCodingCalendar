@@ -45,6 +45,10 @@ class MonthlyFragment : Fragment(),
         cacheFragment()
         initWidget()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         monthlyPresenter.loadSchedulesAllDay()
     }
 
