@@ -27,6 +27,8 @@ import toy.project.davidoh.summercodingcalendar.util.decorator.EventDecorator
 
 class WeeklyFragment : Fragment(), WeeklyContractor.View,
     OnDateSelectedListener {
+    override var isActive: Boolean = false
+        get() = isAdded
 
     private val weeklyPresenter: WeeklyContractor.Presenter by lazy {
         WeeklyPresenter(

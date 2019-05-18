@@ -27,6 +27,9 @@ class MonthlyFragment : Fragment(),
         MonthlyContractor.View,
         OnDateSelectedListener {
 
+    override var isActive: Boolean = false
+        get() = isAdded
+
     private val monthlyPresenter: MonthlyContractor.Presenter by lazy {
         MonthlyPresenter(
                 this,

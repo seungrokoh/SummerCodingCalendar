@@ -21,6 +21,9 @@ import toy.project.davidoh.summercodingcalendar.util.nowLocalDate
 
 
 class AddScheduleDialog : DialogFragment(), AddScheduleContractor.View, CompoundButton.OnCheckedChangeListener{
+    override var isActive: Boolean = false
+        get() = isAdded
+
     private val addSchedulePresenter: AddSchedulePresenter by lazy {
         AddSchedulePresenter(this,
                 Injection.provideTaskRepository(activity?.applicationContext!!)

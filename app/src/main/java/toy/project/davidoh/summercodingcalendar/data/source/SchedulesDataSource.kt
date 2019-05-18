@@ -16,9 +16,10 @@ interface SchedulesDataSource {
         fun onInsertFailed()
     }
 
-    fun getSchedulesAllDay(callback: LoadSchedulesCallback)
 
-    fun getSchedulesOnDay(date: CalendarDay, callback: LoadSchedulesCallback)
+    suspend fun getSchedulesAllDay() : Result<List<Schedule>>
+
+    suspend fun getSchedulesOnDay(date: CalendarDay) : Result<List<Schedule>>
 
     fun addSchedule(schedule: Schedule, callback: InsertScheduleCallback)
 
