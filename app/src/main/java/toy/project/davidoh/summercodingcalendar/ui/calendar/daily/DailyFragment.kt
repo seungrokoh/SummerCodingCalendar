@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_daily.*
+import toy.project.davidoh.summercodingcalendar.Global.PREF_DAILY
 import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
 import toy.project.davidoh.summercodingcalendar.R
 import toy.project.davidoh.summercodingcalendar.ui.calendar.adapter.SchedulesListAdapter
 import toy.project.davidoh.summercodingcalendar.ui.calendar.daily.presenter.DailyContractor
 import toy.project.davidoh.summercodingcalendar.ui.calendar.daily.presenter.DailyPresenter
 import toy.project.davidoh.summercodingcalendar.util.Injection
+import toy.project.davidoh.summercodingcalendar.util.SharedPreferenceUtil
 
 class DailyFragment : Fragment(), DailyContractor.View {
     private val dailyPresenter: DailyContractor.Presenter by lazy {
@@ -30,7 +32,7 @@ class DailyFragment : Fragment(), DailyContractor.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        cacheFragment()
         widgetInit()
         dailyPresenter.getSchedulesOnDay()
     }
@@ -50,6 +52,10 @@ class DailyFragment : Fragment(), DailyContractor.View {
         }
 
         tv_date.text = getCurrentDayToString()
+    }
+
+    private fun cacheFragment() {
+        SharedPreferenceUtil(activity?.applicationContext!!).put("LAST_FRAGMENT", PREF_DAILY)
     }
 
     override fun showCurrentDate() {

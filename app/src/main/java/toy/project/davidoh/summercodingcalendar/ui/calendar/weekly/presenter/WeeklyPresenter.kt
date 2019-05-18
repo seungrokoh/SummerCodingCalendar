@@ -36,7 +36,9 @@ class WeeklyPresenter(private val view: WeeklyContractor.View,
     override fun loadSchedulesAllDay() {
         schedulesRepository.getSchedulesAllDay(object : SchedulesDataSource.LoadSchedulesCallback {
             override fun onSchedulesLoaded(schedules: List<Schedule>) {
-                addDotDecorator(schedules)
+                if (!schedules.isNullOrEmpty()) {
+                    addDotDecorator(schedules)
+                }
             }
 
             override fun onDataNotAvailable() {
@@ -50,6 +52,7 @@ class WeeklyPresenter(private val view: WeeklyContractor.View,
         for (item in schedules) {
             dateList.add(item.date)
         }
+        logE(schedules.toString())
         view.showDecorateOnCalendar(dateList)
     }
 

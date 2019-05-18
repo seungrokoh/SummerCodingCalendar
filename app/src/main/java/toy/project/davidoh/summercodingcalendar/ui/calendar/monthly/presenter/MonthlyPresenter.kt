@@ -12,7 +12,9 @@ class MonthlyPresenter(private val view: MonthlyContractor.View,
     override fun loadSchedulesAllDay() {
         schedulesRepository.getSchedulesAllDay(object : SchedulesDataSource.LoadSchedulesCallback {
             override fun onSchedulesLoaded(schedules: List<Schedule>) {
-                addDotDecorator(schedules)
+                if (schedules.isNullOrEmpty()) {
+                    addDotDecorator(schedules)
+                }
             }
 
             override fun onDataNotAvailable() {
