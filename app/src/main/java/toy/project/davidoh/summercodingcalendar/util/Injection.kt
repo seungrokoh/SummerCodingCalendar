@@ -8,6 +8,6 @@ import toy.project.davidoh.summercodingcalendar.data.source.local.SchedulesLocal
 object Injection {
     fun provideTaskRepository(context: Context): SchedulesRepository {
         val database = ScheduleDatabase.getInstance(context)
-        return SchedulesRepository.getInstance(SchedulesLocalDataSource.getInstance(database.SchedulesDao()))
+        return SchedulesRepository.getInstance(SchedulesLocalDataSource.getInstance(AppExecutors(), database.SchedulesDao()))
     }
 }

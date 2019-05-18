@@ -1,9 +1,11 @@
 package toy.project.davidoh.summercodingcalendar.ui.add.presenter
 
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import toy.project.davidoh.summercodingcalendar.data.source.SchedulesDataSource
 
 interface AddScheduleContractor {
     interface View {
+        var isActive: Boolean
         fun showProgress()
         fun hideProgress()
 

@@ -6,43 +6,51 @@ import toy.project.davidoh.summercodingcalendar.data.source.local.SchedulesLocal
 
 class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDataSource)
     : SchedulesDataSource {
+//    override suspend fun load(): Result<List<Schedule>> {
+//        val result = schedulesLocalDataSource.load()
+//        return when(result) {
+//            is Result.Success -> {
+//                Result.Success(result.data)
+//            }
+//            is Result.Error -> {
+//                Result.Error(LocalDataNotFoundException())
+//            }
+//        }
+//    }
+
     var cachedSchedules: LinkedHashMap<String, Schedule> = LinkedHashMap()
 
     var cacheIsDirty = false
 
-    override fun getSchedulesAllDay(callback: SchedulesDataSource.LoadSchedulesCallback) {
+    override suspend fun getSchedulesAllDay(): Result<List<Schedule>> {
         if (cachedSchedules.isNotEmpty() && !cacheIsDirty) {
-            callback.onSchedulesLoaded(ArrayList(cachedSchedules.values))
-        } else {
-            schedulesLocalDataSource.getSchedulesAllDay(object : SchedulesDataSource.LoadSchedulesCallback {
-                override fun onSchedulesLoaded(schedules: List<Schedule>) {
-                    refreshCache(schedules)
-                    callback.onSchedulesLoaded(ArrayList(cachedSchedules.values))
-                }
-
-                override fun onDataNotAvailable() {
-                    callback.onDataNotAvailable()
-                }
-
-            })
+            Result.Success(cachedSchedules.values.toList())
+        }
+        val result = schedulesLocalDataSource.getSchedulesAllDay()
+        return when(result) {
+            is Result.Success -> {
+                refreshCache(result.data)
+                Result.Success(result.data)
+            }
+            is Result.Error -> {
+                Result.Error(LocalDataNotFoundException())
+            }
         }
     }
 
-    override fun getSchedulesOnDay(date: CalendarDay, callback: SchedulesDataSource.LoadSchedulesCallback) {
+    override suspend fun getSchedulesOnDay(date: CalendarDay): Result<List<Schedule>> {
         if (cachedSchedules.isNotEmpty() && !cacheIsDirty) {
-            callback.onSchedulesLoaded(cachedSchedules.values.filter { it.date == date }.toList())
-        } else {
-            schedulesLocalDataSource.getSchedulesOnDay(date, object : SchedulesDataSource.LoadSchedulesCallback {
-                override fun onSchedulesLoaded(schedules: List<Schedule>) {
-                    refreshCache(schedules)
-                    callback.onSchedulesLoaded(cachedSchedules.values.filter { it.date == date }.toList())
-                }
-
-                override fun onDataNotAvailable() {
-                    callback.onDataNotAvailable()
-                }
-
-            })
+            Result.Success(cachedSchedules.values.filter { it.date == date }.toList())
+        }
+        val result = schedulesLocalDataSource.getSchedulesOnDay(date)
+        return when(result) {
+            is Result.Success -> {
+                refreshCache(result.data)
+                Result.Success(cachedSchedules.values.filter { it.date == date }.toList())
+            }
+            is Result.Error -> {
+                Result.Error(LocalDataNotFoundException())
+            }
         }
     }
 

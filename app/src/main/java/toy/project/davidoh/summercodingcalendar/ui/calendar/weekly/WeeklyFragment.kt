@@ -15,18 +15,20 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_weekly.*
 import kotlinx.android.synthetic.main.include_calendar.*
-import toy.project.davidoh.summercodingcalendar.Global.cachedFragment
+import toy.project.davidoh.summercodingcalendar.Global.PREF_WEEKLY
 import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
 import toy.project.davidoh.summercodingcalendar.R
 import toy.project.davidoh.summercodingcalendar.ui.calendar.adapter.SchedulesListAdapter
-import toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.MonthlyFragment
 import toy.project.davidoh.summercodingcalendar.ui.calendar.weekly.presenter.WeeklyContractor
 import toy.project.davidoh.summercodingcalendar.ui.calendar.weekly.presenter.WeeklyPresenter
 import toy.project.davidoh.summercodingcalendar.util.Injection
+import toy.project.davidoh.summercodingcalendar.util.SharedPreferenceUtil
 import toy.project.davidoh.summercodingcalendar.util.decorator.EventDecorator
 
 class WeeklyFragment : Fragment(), WeeklyContractor.View,
     OnDateSelectedListener {
+    override var isActive: Boolean = false
+        get() = isAdded
 
     private val weeklyPresenter: WeeklyContractor.Presenter by lazy {
         WeeklyPresenter(
@@ -65,7 +67,7 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
     }
 
     private fun cacheFragment() {
-        cachedFragment = this
+        SharedPreferenceUtil(activity?.applicationContext!!).put("LAST_FRAGMENT", PREF_WEEKLY)
     }
 
     override fun showSuccessMessage(message: String) {

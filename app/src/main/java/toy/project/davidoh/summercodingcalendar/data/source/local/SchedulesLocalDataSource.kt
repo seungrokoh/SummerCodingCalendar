@@ -1,41 +1,55 @@
 package toy.project.davidoh.summercodingcalendar.data.source.local
 
 import com.prolificinteractive.materialcalendarview.CalendarDay
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import toy.project.davidoh.summercodingcalendar.data.Schedule
+import toy.project.davidoh.summercodingcalendar.data.source.LocalDataNotFoundException
+import toy.project.davidoh.summercodingcalendar.data.source.Result
 import toy.project.davidoh.summercodingcalendar.data.source.SchedulesDataSource
+import toy.project.davidoh.summercodingcalendar.util.AppExecutors
 
-class SchedulesLocalDataSource(private val schedulesDao: SchedulesDao) : SchedulesDataSource {
-    override fun getSchedulesAllDay(callback: SchedulesDataSource.LoadSchedulesCallback) {
-        CoroutineScope(Dispatchers.IO).launch {
-            var result: List<Schedule>? = null
-            CoroutineScope(Dispatchers.IO).async {
-                result = schedulesDao.getAllSchedules()
-            }.await()
+class SchedulesLocalDataSource(private val appExecutors: AppExecutors,
+                               private val schedulesDao: SchedulesDao) : SchedulesDataSource {
+//    override suspend fun load(): Result<List<Schedule>> = withContext(appExecutors.ioContext) {
+//        val list = async { schedulesDao.getAllSchedules() }
+//        try {
+//            val result = list.await()
+//            if (result.isNotEmpty()) {
+//                Result.Success(result)
+//            } else {
+//                Result.Error(LocalDataNotFoundException())
+//            }
+//        } catch (ex: Throwable) {
+//            Result.Error(LocalDataNotFoundException())
+//        }
+//    }
 
-            if (result != null && result?.size!! > 0) {
-                callback.onSchedulesLoaded(schedulesDao.getAllSchedules())
+
+    override suspend fun getSchedulesAllDay(): Result<List<Schedule>> = withContext(appExecutors.ioContext) {
+        val list = async { schedulesDao.getAllSchedules() }
+        try {
+            val result = list.await()
+            if (result.isNotEmpty()) {
+                Result.Success(result)
             } else {
-                callback.onDataNotAvailable()
+                Result.Error(LocalDataNotFoundException())
             }
+        } catch (ex: Throwable) {
+            Result.Error(LocalDataNotFoundException())
         }
     }
 
-    override fun getSchedulesOnDay(date: CalendarDay, callback: SchedulesDataSource.LoadSchedulesCallback) {
-        CoroutineScope(Dispatchers.IO).launch {
-            var result: List<Schedule>? = null
-            CoroutineScope(Dispatchers.IO).async {
-                result = schedulesDao.getSchedulesOnDay(date)
-            }.await()
-
-            if (result != null && result?.size!! > 0) {
-                callback.onSchedulesLoaded(result!!)
+    override suspend fun getSchedulesOnDay(date: CalendarDay): Result<List<Schedule>> = withContext(appExecutors.ioContext) {
+        val list = async { schedulesDao.getSchedulesOnDay(date) }
+        try {
+            val result = list.await()
+            if (result.isNotEmpty()) {
+                Result.Success(result)
             } else {
-                callback.onDataNotAvailable()
+                Result.Error(LocalDataNotFoundException())
             }
+        } catch (ex: Throwable) {
+            Result.Error(LocalDataNotFoundException())
         }
 
     }
@@ -61,10 +75,10 @@ class SchedulesLocalDataSource(private val schedulesDao: SchedulesDao) : Schedul
     companion object {
         private var INSTANCE: SchedulesLocalDataSource? = null
 
-        fun getInstance(schedulesDao: SchedulesDao) : SchedulesLocalDataSource {
+        fun getInstance(appExecutors: AppExecutors, schedulesDao: SchedulesDao) : SchedulesLocalDataSource {
             if (INSTANCE == null) {
                 synchronized(SchedulesLocalDataSource::class) {
-                    INSTANCE = SchedulesLocalDataSource(schedulesDao)
+                    INSTANCE = SchedulesLocalDataSource(appExecutors, schedulesDao)
                 }
             }
             return INSTANCE!!

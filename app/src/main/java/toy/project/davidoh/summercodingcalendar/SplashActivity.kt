@@ -24,7 +24,6 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         if (isSplash) {
-            isSplash = !isSplash
             navigateToCalendar()
         }
         delayHandler = Handler()
