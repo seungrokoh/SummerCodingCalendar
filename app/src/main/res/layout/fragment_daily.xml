@@ -25,7 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="center"
-            android:text="2019년 5월 17일"
+            android:text="@string/daily_fragment_date"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="일정 목록"
+        android:text="@string/daily_fragment_schedule_list_title"
         android:textSize="18sp"
         android:textStyle="bold"/>
 

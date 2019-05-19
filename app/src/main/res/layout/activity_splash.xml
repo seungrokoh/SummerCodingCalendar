@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:gravity="center"
-            android:text="2019 Summer Cording\nTodo Calendar"
+            android:text="@string/splash_title"
             android:textSize="24sp"
             android:textColor="@android:color/white"
             android:textStyle="bold"

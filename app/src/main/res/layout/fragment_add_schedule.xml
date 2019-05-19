@@ -30,18 +30,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="textEnd"
-            android:text="월 단위로 보기" />
+            android:text="@string/add_schedule_switch_title" />
 
         <EditText
             android:id="@+id/et_title"
-            android:hint="일정을 입력해주세요."
+            android:hint="@string/add_schedule_hint_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"/>
 
         <EditText
             android:id="@+id/et_description"
-            android:hint="내용을 입력해주세요."
+            android:hint="@string/add_schedule_hint_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@color/colorPrimary"
-            android:text="일정 등록"
+            android:text="@string/add_schedule_submit"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@android:color/white"/>

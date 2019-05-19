@@ -1,7 +1,19 @@
 <resources>
-    <string name="app_name">SummerCodingCalendar</string>
+    <string name="app_name">섬머코딩\n캘린더</string>
+
     <string name="title_activity_calendar">CalendarActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+
+    <string name="title_home">월간</string>
+    <string name="title_dashboard">주간</string>
+    <string name="title_notifications">일간</string>
+
+    <string name="splash_title">2019 섬머코딩\n캘린더</string>
+
+    <string name="add_schedule_switch_title">월 단위로 보기</string>
+    <string name="add_schedule_hint_title">일정을 입력해주세요.</string>
+    <string name="add_schedule_hint_description">내용을 입력해주세요.</string>
+    <string name="add_schedule_submit">일정 등록</string>
+
+    <string name="daily_fragment_date">2019년 5월 17일</string>
+    <string name="daily_fragment_schedule_list_title">일정 목록</string>
 </resources>
