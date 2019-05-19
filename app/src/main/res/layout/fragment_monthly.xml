@@ -17,7 +17,7 @@
         android:layout_marginTop="8dp"
         android:padding="8dp"
         android:gravity="center"
-        android:text="주간, 일간 화면에서 일정 내용을 볼 수 있습니다."
+        android:text="@string/monthly_information_text"
         android:textSize="14sp"
         android:textStyle="bold" />
 

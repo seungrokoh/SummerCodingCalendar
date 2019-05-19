@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="등록된 일정이 없습니다."
+            android:text="@string/all_empty"
             android:textSize="20sp"
             android:textColor="@color/colorWhite"
             android:textStyle="bold"

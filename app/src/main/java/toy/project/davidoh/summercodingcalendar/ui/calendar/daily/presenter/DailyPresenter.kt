@@ -2,9 +2,7 @@ package toy.project.davidoh.summercodingcalendar.ui.calendar.daily.presenter
 
 import kotlinx.coroutines.Dispatchers
 import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
-import toy.project.davidoh.summercodingcalendar.data.Schedule
 import toy.project.davidoh.summercodingcalendar.data.source.Result
-import toy.project.davidoh.summercodingcalendar.data.source.SchedulesDataSource
 import toy.project.davidoh.summercodingcalendar.data.source.SchedulesRepository
 import toy.project.davidoh.summercodingcalendar.ui.calendar.adapter.model.ScheduleModel
 import toy.project.davidoh.summercodingcalendar.util.launchSilent

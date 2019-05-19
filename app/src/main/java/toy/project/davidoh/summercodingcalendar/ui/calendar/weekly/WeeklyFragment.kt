@@ -1,7 +1,6 @@
 package toy.project.davidoh.summercodingcalendar.ui.calendar.weekly
 
 import android.graphics.Color
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

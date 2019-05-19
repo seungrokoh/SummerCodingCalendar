@@ -16,4 +16,7 @@
 
     <string name="daily_fragment_date">2019년 5월 17일</string>
     <string name="daily_fragment_schedule_list_title">일정 목록</string>
+    <string name="add_schedule_title">일정 추가</string>
+    <string name="all_empty">등록된 일정이 없습니다.</string>
+    <string name="monthly_information_text">주간, 일간 화면에서 일정 내용을 볼 수 있습니다.</string>
 </resources>
