@@ -93,6 +93,10 @@ class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDa
 
             return INSTANCE!!
         }
+
+        fun destroyInstance() {
+            INSTANCE = null
+        }
     }
 
 }

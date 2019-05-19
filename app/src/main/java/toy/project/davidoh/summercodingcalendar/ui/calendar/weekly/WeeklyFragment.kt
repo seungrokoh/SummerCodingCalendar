@@ -121,5 +121,9 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
             }
             return INSTANCE!!
         }
+
+        fun destroyInstance() {
+            INSTANCE = null
+        }
     }
 }

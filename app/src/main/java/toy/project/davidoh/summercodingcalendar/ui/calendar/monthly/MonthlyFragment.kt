@@ -98,5 +98,9 @@ class MonthlyFragment : Fragment(),
             }
             return INSTANCE!!
         }
+
+        fun destroyInstance() {
+            INSTANCE = null
+        }
     }
 }

@@ -9,9 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_daily.*
-import kotlinx.android.synthetic.main.fragment_daily.rv_schedules
-import kotlinx.android.synthetic.main.fragment_daily.tv_empty
-import kotlinx.android.synthetic.main.fragment_weekly.*
 import toy.project.davidoh.summercodingcalendar.Global.PREF_DAILY
 import toy.project.davidoh.summercodingcalendar.Global.PREF_KEY_LAST_FRAGMENT
 import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
@@ -112,6 +109,10 @@ class DailyFragment : Fragment(), DailyContractor.View {
                 INSTANCE = DailyFragment()
             }
             return INSTANCE!!
+        }
+
+        fun destroyInstance() {
+            INSTANCE = null
         }
     }
 }
