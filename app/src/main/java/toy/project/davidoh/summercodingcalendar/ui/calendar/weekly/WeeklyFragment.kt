@@ -106,7 +106,7 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
     override fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>) {
         material_claendar.addDecorator(
             EventDecorator(
-                Color.RED,
+                Color.BLACK,
                 schedules
             )
         )

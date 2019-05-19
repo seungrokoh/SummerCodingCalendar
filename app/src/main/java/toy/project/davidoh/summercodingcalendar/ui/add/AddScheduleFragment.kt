@@ -17,6 +17,9 @@ import toy.project.davidoh.summercodingcalendar.R
 import toy.project.davidoh.summercodingcalendar.ui.add.presenter.AddScheduleContractor
 import toy.project.davidoh.summercodingcalendar.ui.add.presenter.AddSchedulePresenter
 import toy.project.davidoh.summercodingcalendar.util.Injection
+import toy.project.davidoh.summercodingcalendar.util.decorator.SaturdayDecorator
+import toy.project.davidoh.summercodingcalendar.util.decorator.SunDayDecorator
+import toy.project.davidoh.summercodingcalendar.util.decorator.TodayDecorator
 import toy.project.davidoh.summercodingcalendar.util.nowLocalDate
 
 class AddScheduleFragment : Fragment(), AddScheduleContractor.View, CompoundButton.OnCheckedChangeListener {
@@ -46,6 +49,10 @@ class AddScheduleFragment : Fragment(), AddScheduleContractor.View, CompoundButt
                     .setCalendarDisplayMode(CalendarMode.WEEKS).commit()
             setSelectedDate(nowLocalDate())
             setTitleFormatter { calendarDay -> "${calendarDay.year}년 ${calendarDay.month}월" }
+            addDecorators(SaturdayDecorator(),
+                    SunDayDecorator() ,
+                    TodayDecorator(CalendarDay.from(nowLocalDate()))
+            )
         }
 
         switch_mode.setOnCheckedChangeListener(this)

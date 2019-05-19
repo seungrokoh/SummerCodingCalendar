@@ -1,0 +1,20 @@
+package toy.project.davidoh.summercodingcalendar.util.decorator
+
+import android.graphics.Color
+import android.text.style.ForegroundColorSpan
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.DayViewDecorator
+import com.prolificinteractive.materialcalendarview.DayViewFacade
+import org.threeten.bp.DayOfWeek
+
+class SunDayDecorator : DayViewDecorator {
+
+    override fun shouldDecorate(day: CalendarDay): Boolean {
+        val weekDay = day.date.dayOfWeek
+        return weekDay === DayOfWeek.SUNDAY
+    }
+
+    override fun decorate(view: DayViewFacade) {
+        view.addSpan(ForegroundColorSpan(Color.RED))
+    }
+}

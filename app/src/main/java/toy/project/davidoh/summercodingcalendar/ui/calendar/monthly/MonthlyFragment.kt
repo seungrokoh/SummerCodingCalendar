@@ -79,7 +79,7 @@ class MonthlyFragment : Fragment(),
         logE(schedules.toString())
         material_claendar.addDecorator(
                 EventDecorator(
-                        Color.RED,
+                        Color.BLACK,
                         schedules
                 )
         )
