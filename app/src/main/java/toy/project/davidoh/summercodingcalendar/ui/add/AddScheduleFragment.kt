@@ -45,6 +45,7 @@ class AddScheduleFragment : Fragment(), AddScheduleContractor.View, CompoundButt
                     .setMinimumDate(CalendarDay.from(2018, 10, 1))
                     .setCalendarDisplayMode(CalendarMode.WEEKS).commit()
             setSelectedDate(nowLocalDate())
+            setTitleFormatter { calendarDay -> "${calendarDay.year}년 ${calendarDay.month}월" }
         }
 
         switch_mode.setOnCheckedChangeListener(this)
