@@ -76,7 +76,6 @@ class MonthlyFragment : Fragment(),
     }
 
     override fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>) {
-        logE(schedules.toString())
         material_claendar.addDecorator(
                 EventDecorator(
                         Color.BLACK,
