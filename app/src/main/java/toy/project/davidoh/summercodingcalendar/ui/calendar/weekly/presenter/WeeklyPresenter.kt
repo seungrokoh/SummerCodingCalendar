@@ -55,7 +55,6 @@ class WeeklyPresenter(
         for (item in schedules) {
             dateList.add(item.date)
         }
-        logE(schedules.toString())
         view.showDecorateOnCalendar(dateList)
     }
 
