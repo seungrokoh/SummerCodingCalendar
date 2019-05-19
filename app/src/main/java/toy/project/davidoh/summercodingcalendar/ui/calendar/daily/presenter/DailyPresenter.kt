@@ -31,12 +31,13 @@ class DailyPresenter(private val view: DailyContractor.View,
                 scheduleModel.addItem(it)
             }
             if (view.isActive) {
+                view.showScheduleRecyclerView()
                 scheduleModel.notifyDataSetChange()
             }
         } else {
             if (view.isActive) {
                 scheduleModel.notifyDataSetChange()
-                view.showInfoMessage("등록된 일정이 없습니다.")
+                view.showScheduleEmptyView()
             }
         }
     }

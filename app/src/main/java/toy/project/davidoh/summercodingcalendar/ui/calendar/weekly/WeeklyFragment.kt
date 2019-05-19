@@ -1,6 +1,7 @@
 package toy.project.davidoh.summercodingcalendar.ui.calendar.weekly
 
 import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,7 @@ import toy.project.davidoh.summercodingcalendar.util.decorator.EventDecorator
 
 class WeeklyFragment : Fragment(), WeeklyContractor.View,
     OnDateSelectedListener {
+
     override var isActive: Boolean = false
         get() = isAdded
 
@@ -84,6 +86,16 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
 
     override fun showErrorMesage(message: String) {
         Toasty.error(context!!, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showScheduleRecyclerView() {
+        rv_schedules.visibility = View.VISIBLE
+        tv_empty.visibility = View.GONE
+    }
+
+    override fun showScheduleEmptyView() {
+        rv_schedules.visibility = View.GONE
+        tv_empty.visibility = View.VISIBLE
     }
 
     override fun onDateSelected(widget: MaterialCalendarView, date: CalendarDay, selected: Boolean) {

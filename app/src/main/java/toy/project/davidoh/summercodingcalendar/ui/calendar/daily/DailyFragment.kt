@@ -9,6 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_daily.*
+import kotlinx.android.synthetic.main.fragment_daily.rv_schedules
+import kotlinx.android.synthetic.main.fragment_daily.tv_empty
+import kotlinx.android.synthetic.main.fragment_weekly.*
 import toy.project.davidoh.summercodingcalendar.Global.PREF_DAILY
 import toy.project.davidoh.summercodingcalendar.Global.PREF_KEY_LAST_FRAGMENT
 import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
@@ -79,6 +82,16 @@ class DailyFragment : Fragment(), DailyContractor.View {
 
     override fun showErrorMesage(message: String) {
         Toasty.error(context!!, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showScheduleRecyclerView() {
+        rv_schedules.visibility = View.VISIBLE
+        tv_empty.visibility = View.GONE
+    }
+
+    override fun showScheduleEmptyView() {
+        rv_schedules.visibility = View.GONE
+        tv_empty.visibility = View.VISIBLE
     }
 
     override fun showCurrentDate() {

@@ -10,6 +10,9 @@ interface WeeklyContractor {
         fun showInfoMessage(message: String)
         fun showErrorMesage(message: String)
 
+        fun showScheduleRecyclerView()
+        fun showScheduleEmptyView()
+
         fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>)
     }
 

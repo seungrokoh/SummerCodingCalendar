@@ -10,6 +10,9 @@ interface DailyContractor {
         fun showInfoMessage(message: String)
         fun showErrorMesage(message: String)
 
+        fun showScheduleRecyclerView()
+        fun showScheduleEmptyView()
+
         fun showCurrentDate()
     }
 
