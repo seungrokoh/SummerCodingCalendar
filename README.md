@@ -1,9 +1,9 @@
 # SummerCoding Calendar
 2019 썸머 코딩 2차 과제로 주어진 캘린더 만들기 저장소입니다.
 ***
+### __모바일 앱을 테스트할 수 있는 URL__
 
-### __모바일앱을테스트할수있는URL__
-:link: [이동하기](https://appetize.io/app/7c8wdbzu3upg225hb5wqm9pn3m?device=nexus5&scale=75&orientation=portrait&osVersion=8.1)
+:link: [Appetize.io](https://appetize.io/app/7c8wdbzu3upg225hb5wqm9pn3m?device=nexus5&scale=75&orientation=portrait&osVersion=8.1)
 
 __:speaker: 특이사항__
 
@@ -13,6 +13,10 @@ __:iphone: 실물 테스트 기기__
 * 갤럭시 s10 5g (Android 9.0)
 * 갤럭시 s4 (Android 5.0)
 ***
+### PreView
+![스플래시](./README_IMGS/splash.jpg)![월간](./README_IMGS/monthly.jpg)![주간](./README_IMGS/weekly.jpg)![일간](./README_IMGS/daily.jpg)![추가](./README_IMGS/add.jpg)
+
+
 ### __사용 기술 스택 및 라이브러리__
 
 * Kotlin
@@ -40,15 +44,17 @@ __:iphone: 실물 테스트 기기__
 ***
 ### __:seedling: 성능 요구사항__
 
-1. 앱이용시발생하는오류사항을최소화한다.
-2. 오류발생시사용자가이해하기쉽게표시한다.
-3. 다른사람이읽기쉬운코드를작성한다.
-4. 사용할수있는최신구조와기술을사용한다.
+1. 앱 이용 시 발생하는 오류 사항을 최소화한다.
+2. 오류 발생 시 사용자가 이해하기 쉽게 표시한다.
+3. 다른 사람이 읽기 쉬운 코드를 작성한다.
+4. 사용할 수 있는 최신 구조와 기술을 사용한다.
+
 ***
 
 ### __:seedling: 인터페이스 요구사항__
 
-1. 직관적이고의미전달이명확한화면을사용자에게제공한다.
+1. 직관적이고 의미 전달이 명확한 화면을 사용자에게 제공한다.
+
 ***
 
 # Reference
