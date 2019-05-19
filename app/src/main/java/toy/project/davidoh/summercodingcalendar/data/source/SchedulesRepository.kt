@@ -6,17 +6,6 @@ import toy.project.davidoh.summercodingcalendar.data.source.local.SchedulesLocal
 
 class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDataSource)
     : SchedulesDataSource {
-//    override suspend fun load(): Result<List<Schedule>> {
-//        val result = schedulesLocalDataSource.load()
-//        return when(result) {
-//            is Result.Success -> {
-//                Result.Success(result.data)
-//            }
-//            is Result.Error -> {
-//                Result.Error(LocalDataNotFoundException())
-//            }
-//        }
-//    }
 
     var cachedSchedules: LinkedHashMap<String, Schedule> = LinkedHashMap()
 

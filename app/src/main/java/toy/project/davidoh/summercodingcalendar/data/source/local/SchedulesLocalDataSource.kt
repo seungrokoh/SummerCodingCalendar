@@ -10,20 +10,6 @@ import toy.project.davidoh.summercodingcalendar.util.AppExecutors
 
 class SchedulesLocalDataSource(private val appExecutors: AppExecutors,
                                private val schedulesDao: SchedulesDao) : SchedulesDataSource {
-//    override suspend fun load(): Result<List<Schedule>> = withContext(appExecutors.ioContext) {
-//        val list = async { schedulesDao.getAllSchedules() }
-//        try {
-//            val result = list.await()
-//            if (result.isNotEmpty()) {
-//                Result.Success(result)
-//            } else {
-//                Result.Error(LocalDataNotFoundException())
-//            }
-//        } catch (ex: Throwable) {
-//            Result.Error(LocalDataNotFoundException())
-//        }
-//    }
-
 
     override suspend fun getSchedulesAllDay(): Result<List<Schedule>> = withContext(appExecutors.ioContext) {
         val list = async { schedulesDao.getAllSchedules() }

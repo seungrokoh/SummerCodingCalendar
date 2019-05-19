@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import toy.project.davidoh.summercodingcalendar.Global.DATABASE_NAME
 import toy.project.davidoh.summercodingcalendar.data.Schedule
 import toy.project.davidoh.summercodingcalendar.util.Converters
 import toy.project.davidoh.summercodingcalendar.util.logE
@@ -19,12 +20,11 @@ abstract class ScheduleDatabase : RoomDatabase() {
 
         fun getInstance(context: Context) : ScheduleDatabase {
             if (INSTANCE == null) {
-                logE("새로운 db 인스턴스 생성")
                 synchronized(ScheduleDatabase::class) {
                     INSTANCE = Room.databaseBuilder(
                         context,
                         ScheduleDatabase::class.java,
-                        "Schedule.db")
+                            DATABASE_NAME)
                         .build()
                 }
             }

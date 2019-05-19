@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_daily.*
 import toy.project.davidoh.summercodingcalendar.Global.PREF_DAILY
+import toy.project.davidoh.summercodingcalendar.Global.PREF_KEY_LAST_FRAGMENT
 import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
 import toy.project.davidoh.summercodingcalendar.R
 import toy.project.davidoh.summercodingcalendar.ui.calendar.adapter.SchedulesListAdapter
@@ -65,7 +66,7 @@ class DailyFragment : Fragment(), DailyContractor.View {
     }
 
     private fun cacheFragment() {
-        SharedPreferenceUtil(activity?.applicationContext!!).put("LAST_FRAGMENT", PREF_DAILY)
+        SharedPreferenceUtil(activity?.applicationContext!!).put(PREF_KEY_LAST_FRAGMENT, PREF_DAILY)
     }
 
     override fun showSuccessMessage(message: String) {

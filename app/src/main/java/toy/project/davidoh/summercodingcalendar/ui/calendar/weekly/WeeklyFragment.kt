@@ -15,6 +15,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_weekly.*
 import kotlinx.android.synthetic.main.include_calendar.*
+import toy.project.davidoh.summercodingcalendar.Global.PREF_KEY_LAST_FRAGMENT
 import toy.project.davidoh.summercodingcalendar.Global.PREF_WEEKLY
 import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
 import toy.project.davidoh.summercodingcalendar.R
@@ -70,7 +71,7 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
     }
 
     private fun cacheFragment() {
-        SharedPreferenceUtil(activity?.applicationContext!!).put("LAST_FRAGMENT", PREF_WEEKLY)
+        SharedPreferenceUtil(activity?.applicationContext!!).put(PREF_KEY_LAST_FRAGMENT, PREF_WEEKLY)
     }
 
     override fun showSuccessMessage(message: String) {

@@ -4,11 +4,6 @@ import com.prolificinteractive.materialcalendarview.CalendarDay
 import toy.project.davidoh.summercodingcalendar.data.Schedule
 
 interface SchedulesDataSource {
-    interface LoadSchedulesCallback {
-        fun onSchedulesLoaded(schedules: List<Schedule>)
-
-        fun onDataNotAvailable()
-    }
 
     interface InsertScheduleCallback {
         fun onScheduleInserted()

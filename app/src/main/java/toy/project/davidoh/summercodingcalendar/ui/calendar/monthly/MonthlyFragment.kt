@@ -13,6 +13,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.include_calendar.*
+import toy.project.davidoh.summercodingcalendar.Global.PREF_KEY_LAST_FRAGMENT
 import toy.project.davidoh.summercodingcalendar.Global.PREF_MONTHLY
 import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
 import toy.project.davidoh.summercodingcalendar.R
@@ -59,7 +60,7 @@ class MonthlyFragment : Fragment(),
     }
 
     private fun cacheFragment() {
-        SharedPreferenceUtil(activity?.applicationContext!!).put("LAST_FRAGMENT", PREF_MONTHLY)
+        SharedPreferenceUtil(activity?.applicationContext!!).put(PREF_KEY_LAST_FRAGMENT, PREF_MONTHLY)
     }
 
     override fun showSuccessMessage(message: String) {

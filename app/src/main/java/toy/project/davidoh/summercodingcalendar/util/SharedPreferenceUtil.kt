@@ -1,11 +1,10 @@
 package toy.project.davidoh.summercodingcalendar.util
 
 import android.content.Context
-import toy.project.davidoh.summercodingcalendar.Global.PREF_MONTHLY
+import toy.project.davidoh.summercodingcalendar.Global.PREF_DEFAULT_VALUE
+import toy.project.davidoh.summercodingcalendar.Global.PREF_NAME
 
 class SharedPreferenceUtil(val context: Context) {
-    val PREF_NAME = "toy.project.davidoh.summer.calendar"
-    val DEFAULT_VALUE = PREF_MONTHLY
 
     fun put(key: String, value: String) {
         val pref = context.applicationContext.getSharedPreferences(
@@ -23,6 +22,6 @@ class SharedPreferenceUtil(val context: Context) {
             PREF_NAME,
             Context.MODE_PRIVATE
         )
-        return pref.getString(key, DEFAULT_VALUE)
+        return pref.getString(key, PREF_DEFAULT_VALUE)
     }
 }
