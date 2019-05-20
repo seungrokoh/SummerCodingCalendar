@@ -5,18 +5,11 @@ import toy.project.davidoh.summercodingcalendar.data.Schedule
 
 interface SchedulesDataSource {
 
-    interface InsertScheduleCallback {
-        fun onScheduleInserted()
-
-        fun onInsertFailed()
-    }
-
-
     suspend fun getSchedulesAllDay() : Result<List<Schedule>>
 
     suspend fun getSchedulesOnDay(date: CalendarDay) : Result<List<Schedule>>
 
-    fun addSchedule(schedule: Schedule, callback: InsertScheduleCallback)
+    suspend fun addSchedule(schedule: Schedule): Long
 
     fun refreshSchedules()
 }
