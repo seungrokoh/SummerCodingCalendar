@@ -3,7 +3,7 @@
 ***
 ### __모바일 앱을 테스트할 수 있는 URL__
 
-:link: [Appetize.io](https://appetize.io/app/dw834g133yu9fwk7juxzr9q9pr?device=nexus5&scale=75&orientation=portrait&osVersion=8.1)
+:link: [Appetize.io](https://appetize.io/app/6dfate3fh36pnhvkuhxndmuamg)
 
 __:speaker: 특이사항__
 
