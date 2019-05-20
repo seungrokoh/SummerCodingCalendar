@@ -2,12 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="top"
     android:orientation="vertical">
 
-    <include layout="@layout/include_calendar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/mcv_weekly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mcv_showOtherDates="all"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -15,7 +18,7 @@
         android:layout_margin="8dp"
         android:text="@string/daily_fragment_schedule_list_title"
         android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -27,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_empty"
@@ -35,10 +38,10 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/all_empty"
-            android:textSize="20sp"
             android:textColor="@color/colorWhite"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </FrameLayout>
 
 </LinearLayout>

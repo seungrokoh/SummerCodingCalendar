@@ -1,9 +1,9 @@
-# SummerCoding Calendar
-2019 썸머 코딩 2차 과제로 주어진 캘린더 만들기 저장소입니다.
+# 2019 섬머코딩 캘린더 (Android)
+2019 섬머코딩 2차 과제로 주어진 캘린더 만들기 저장소입니다.
 ***
 ### __모바일 앱을 테스트할 수 있는 URL__
 
-:link: [Appetize.io](https://appetize.io/app/7c8wdbzu3upg225hb5wqm9pn3m?device=nexus5&scale=75&orientation=portrait&osVersion=8.1)
+:link: [Appetize.io](https://appetize.io/app/dw834g133yu9fwk7juxzr9q9pr?device=nexus5&scale=75&orientation=portrait&osVersion=8.1)
 
 __:speaker: 특이사항__
 
@@ -32,9 +32,6 @@ __:iphone: 실물 테스트 기기__
 1. 화면은 스플래시(인트로), 캘린더, 스케줄 등록 3개로 구성
 2. 스플래시 화면에서 1.3초후 캘린더 화면으로 진입
 3. 캘린더 화면은 월간, 주간, 일간으로 나뉜 탭 메뉴로 구성
-    * 월간 화면
-    * 주간 화면
-    * 일간 화면
 4. 캘린더 앱의 첫 실행 시 화면은 월간이고, 그 이후에는 마지막 사용 했던 화면이 나타난다.
 5. 캘린더는 항상 현재(오늘)를 기준으로 표시한다.
 6. 캘린더는 이전 달/주/일, 다음 달/주/일로 이동할 수 있다.
@@ -45,7 +42,7 @@ __:iphone: 실물 테스트 기기__
 ### __:seedling: 성능 요구사항__
 
 1. 앱 이용 시 발생하는 오류 사항을 최소화한다.
-2. 오류 발생 시 사용자가 이해하기 쉽게 표시한다.
+2. 오류 발생 시 사용자가 이해하기 쉽게 표시한다.
 3. 다른 사람이 읽기 쉬운 코드를 작성한다.
 4. 사용할 수 있는 최신 구조와 기술을 사용한다.
 

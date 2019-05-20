@@ -3,7 +3,6 @@ package toy.project.davidoh.summercodingcalendar.data.source
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import toy.project.davidoh.summercodingcalendar.data.Schedule
 import toy.project.davidoh.summercodingcalendar.data.source.local.SchedulesLocalDataSource
-import toy.project.davidoh.summercodingcalendar.util.logE
 
 class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDataSource)
     : SchedulesDataSource {
@@ -36,7 +35,6 @@ class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDa
         val result = schedulesLocalDataSource.getSchedulesOnDay(date)
         return when(result) {
             is Result.Success -> {
-                refreshCache(result.data)
                 Result.Success(cachedSchedules.values.filter { it.date == date }.toList())
             }
             is Result.Error -> {
@@ -94,10 +92,6 @@ class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDa
             }
 
             return INSTANCE!!
-        }
-
-        fun destroyInstance() {
-            INSTANCE = null
         }
     }
 

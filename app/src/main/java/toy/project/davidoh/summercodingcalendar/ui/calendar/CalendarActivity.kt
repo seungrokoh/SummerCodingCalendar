@@ -10,7 +10,6 @@ import toy.project.davidoh.summercodingcalendar.Global.PREF_KEY_LAST_FRAGMENT
 import toy.project.davidoh.summercodingcalendar.Global.PREF_MONTHLY
 import toy.project.davidoh.summercodingcalendar.Global.PREF_WEEKLY
 import toy.project.davidoh.summercodingcalendar.R
-import toy.project.davidoh.summercodingcalendar.data.source.SchedulesRepository
 import toy.project.davidoh.summercodingcalendar.ui.add.AddScheduleActivity
 import toy.project.davidoh.summercodingcalendar.ui.calendar.daily.DailyFragment
 import toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.MonthlyFragment
@@ -20,22 +19,14 @@ import toy.project.davidoh.summercodingcalendar.util.replaceFragment
 
 class CalendarActivity : AppCompatActivity() {
 
-    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        when (item.itemId) {
-            R.id.navigation_monthly -> {
-                replaceFragment(R.id.fl_container, MonthlyFragment.getInstance())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_weekly -> {
-                replaceFragment(R.id.fl_container, WeeklyFragment.getInstance())
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_daily -> {
-                replaceFragment(R.id.fl_container, DailyFragment.getInstance())
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
+    private val monthlyFragment: MonthlyFragment by lazy {
+        MonthlyFragment.getInstance()
+    }
+    private val weeklyFragment: WeeklyFragment by lazy {
+        WeeklyFragment.getInstance()
+    }
+    private val dailyFragment: DailyFragment by lazy {
+        DailyFragment.getInstance()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +34,6 @@ class CalendarActivity : AppCompatActivity() {
         setContentView(R.layout.activity_calendar)
 
         bottom_navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        bottom_navigation.setCachedView()
 
         fab_add_schedule.setOnClickListener {
             fab_add_schedule.isEnabled = false
@@ -56,26 +46,47 @@ class CalendarActivity : AppCompatActivity() {
         fab_add_schedule.isEnabled = true
     }
 
-    private fun BottomNavigationView.setCachedView() {
+    override fun onResume() {
+        super.onResume()
+        setCachedView()
+    }
+
+    private fun setCachedView() {
         val latestFragment = SharedPreferenceUtil(applicationContext).get(PREF_KEY_LAST_FRAGMENT)
 
         if (latestFragment == PREF_MONTHLY) {
-            selectedItemId = R.id.navigation_monthly
+            bottom_navigation.selectedItemId = R.id.navigation_monthly
         }
         if (latestFragment == PREF_WEEKLY) {
-            selectedItemId = R.id.navigation_weekly
+            bottom_navigation.selectedItemId = R.id.navigation_weekly
         }
         if (latestFragment == PREF_DAILY) {
-            selectedItemId = R.id.navigation_daily
-
+            bottom_navigation.selectedItemId = R.id.navigation_daily
         }
     }
 
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.navigation_monthly -> {
+                replaceFragment(R.id.fl_container, monthlyFragment)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_weekly -> {
+                replaceFragment(R.id.fl_container, weeklyFragment)
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_daily -> {
+                replaceFragment(R.id.fl_container, dailyFragment)
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
+
     override fun onDestroy() {
-        MonthlyFragment.destroyInstance()
-        WeeklyFragment.destroyInstance()
-        DailyFragment.destroyInstance()
-        SchedulesRepository.destroyInstance()
+        monthlyFragment.destroy()
+        weeklyFragment.destroy()
+        dailyFragment.destroy()
         super.onDestroy()
     }
 }

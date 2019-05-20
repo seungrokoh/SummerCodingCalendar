@@ -17,14 +17,14 @@ class DailyPresenter(private val view: DailyContractor.View,
     : DailyContractor.Presenter {
     init {
         scheduleModel.onclick = { position ->
-
+            // 일정 삭제, 수정 기능 추가시 사용
         }
     }
 
     override fun getSchedulesOnDay() = launchSilent(uiContext) {
         val result = schedulesRepository.getSchedulesOnDay(cachedSelectedDate!!)
         scheduleModel.clear()
-        if (result is Result.Success) {
+        if (result is Result.Success && result.data.isNotEmpty()) {
             result.data.forEach {
                 scheduleModel.addItem(it)
             }
