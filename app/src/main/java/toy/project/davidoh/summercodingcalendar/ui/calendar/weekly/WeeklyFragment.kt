@@ -14,7 +14,6 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_weekly.*
-import kotlinx.android.synthetic.main.include_calendar.*
 import toy.project.davidoh.summercodingcalendar.Global.PREF_KEY_LAST_FRAGMENT
 import toy.project.davidoh.summercodingcalendar.Global.PREF_WEEKLY
 import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
@@ -25,6 +24,11 @@ import toy.project.davidoh.summercodingcalendar.ui.calendar.weekly.presenter.Wee
 import toy.project.davidoh.summercodingcalendar.util.Injection
 import toy.project.davidoh.summercodingcalendar.util.SharedPreferenceUtil
 import toy.project.davidoh.summercodingcalendar.util.decorator.EventDecorator
+import toy.project.davidoh.summercodingcalendar.util.decorator.SaturdayDecorator
+import toy.project.davidoh.summercodingcalendar.util.decorator.SunDayDecorator
+import toy.project.davidoh.summercodingcalendar.util.decorator.TodayDecorator
+import toy.project.davidoh.summercodingcalendar.util.logE
+import toy.project.davidoh.summercodingcalendar.util.nowLocalDate
 
 class WeeklyFragment : Fragment(), WeeklyContractor.View,
     OnDateSelectedListener {
@@ -51,18 +55,38 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
         super.onViewCreated(view, savedInstanceState)
         cacheFragment()
         widgetInit()
+        logE("onViewCreated")
     }
 
     override fun onResume() {
         super.onResume()
-        weeklyPresenter.loadSchedulesAllDay()
+        logE("onResume")
+
+        mcv_weekly.apply {
+            currentDate = cachedSelectedDate
+            selectedDate = cachedSelectedDate
+            selectionColor = resources.getColor(R.color.colorAccent)
+        }
+
+        weeklyPresenter.drawEventsOnCalendar()
         weeklyPresenter.getSchedulesOnDay(cachedSelectedDate!!)
     }
 
     private fun widgetInit() {
 
-        material_claendar.setViewInit(CalendarMode.WEEKS).apply {
+        mcv_weekly.apply {
+            state().edit()
+                    .setMinimumDate(CalendarDay.from(1992, 7, 11))
+                    .setMaximumDate(CalendarDay.from(2099, 7, 11))
+                    .setCalendarDisplayMode(CalendarMode.WEEKS)
+                    .commit()
+
+            setTitleFormatter { calendarDay -> "${calendarDay.year}년 ${calendarDay.month}월" }
             setOnDateChangedListener(this@WeeklyFragment)
+            addDecorators(SaturdayDecorator(),
+                    SunDayDecorator() ,
+                    TodayDecorator(CalendarDay.from(nowLocalDate()))
+            )
         }
 
         rv_schedules.apply {
@@ -103,12 +127,18 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
     }
 
     override fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>) {
-        material_claendar.addDecorator(
+        mcv_weekly.addDecorator(
             EventDecorator(
                 Color.BLACK,
                 schedules
             )
         )
+    }
+
+    override fun destroy() {
+        INSTANCE?.let {
+            INSTANCE = null
+        }
     }
 
     companion object {
@@ -119,10 +149,6 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
                 return WeeklyFragment()
             }
             return INSTANCE!!
-        }
-
-        fun destroyInstance() {
-            INSTANCE = null
         }
     }
 }

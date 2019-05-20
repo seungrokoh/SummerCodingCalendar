@@ -14,16 +14,16 @@ class MonthlyPresenter(
     private val uiContext: CoroutineContext = Dispatchers.Main
 ) : MonthlyContractor.Presenter {
 
-    override fun loadSchedulesAllDay() = launchSilent(uiContext) {
+    override fun drawEventsOnCalendar() = launchSilent(uiContext) {
         val result = schedulesRepository.getSchedulesAllDay()
         if (result is Result.Success) {
             if (view.isActive) {
-                addDotDecorator(result.data)
+                addDotDecoratorOnCalendar(result.data)
             }
         }
     }
 
-    private fun addDotDecorator(schedules: List<Schedule>) {
+    private fun addDotDecoratorOnCalendar(schedules: List<Schedule>) {
         val dateList = mutableListOf<CalendarDay>()
         for (item in schedules) {
             dateList.add(item.date)

@@ -18,14 +18,14 @@ class WeeklyPresenter(
 ) : WeeklyContractor.Presenter {
     init {
         scheduleModel.onclick = { position ->
-            logE(scheduleModel.getItem(position).toString())
+            // 일정 삭제, 수정 기능 추가시 사용
         }
     }
 
     override fun getSchedulesOnDay(date: CalendarDay) = launchSilent(uiContext) {
         val result = schedulesRepository.getSchedulesOnDay(date)
         scheduleModel.clear()
-        if (result is Result.Success) {
+        if (result is Result.Success && result.data.isNotEmpty()) {
             result.data.forEach {
                 scheduleModel.addItem(it)
             }
@@ -41,16 +41,16 @@ class WeeklyPresenter(
         }
     }
 
-    override fun loadSchedulesAllDay() = launchSilent(uiContext) {
+    override fun drawEventsOnCalendar() = launchSilent(uiContext) {
         val result = schedulesRepository.getSchedulesAllDay()
         if (result is Result.Success) {
             if (view.isActive) {
-                addDotDecorator(result.data)
+                addDotDecoratorOnCalendar(result.data)
             }
         }
     }
 
-    private fun addDotDecorator(schedules: List<Schedule>) {
+    private fun addDotDecoratorOnCalendar(schedules: List<Schedule>) {
         val dateList = mutableListOf<CalendarDay>()
         for (item in schedules) {
             dateList.add(item.date)

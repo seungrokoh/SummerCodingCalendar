@@ -12,6 +12,8 @@ interface DailyContractor {
         fun showScheduleEmptyView()
 
         fun showCurrentDate()
+
+        fun destroy()
     }
 
     interface Presenter {

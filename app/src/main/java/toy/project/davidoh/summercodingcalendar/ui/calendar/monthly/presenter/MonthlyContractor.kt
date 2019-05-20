@@ -11,9 +11,11 @@ interface MonthlyContractor {
         fun showErrorMessage(message: String)
 
         fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>)
+
+        fun destroy()
     }
 
     interface Presenter {
-        fun loadSchedulesAllDay()
+        fun drawEventsOnCalendar()
     }
 }

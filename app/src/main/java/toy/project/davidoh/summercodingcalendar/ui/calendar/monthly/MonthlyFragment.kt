@@ -12,7 +12,7 @@ import com.prolificinteractive.materialcalendarview.CalendarMode
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import es.dmoral.toasty.Toasty
-import kotlinx.android.synthetic.main.include_calendar.*
+import kotlinx.android.synthetic.main.fragment_monthly.*
 import toy.project.davidoh.summercodingcalendar.Global.PREF_KEY_LAST_FRAGMENT
 import toy.project.davidoh.summercodingcalendar.Global.PREF_MONTHLY
 import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
@@ -22,7 +22,10 @@ import toy.project.davidoh.summercodingcalendar.ui.calendar.monthly.presenter.Mo
 import toy.project.davidoh.summercodingcalendar.util.Injection
 import toy.project.davidoh.summercodingcalendar.util.SharedPreferenceUtil
 import toy.project.davidoh.summercodingcalendar.util.decorator.EventDecorator
-import toy.project.davidoh.summercodingcalendar.util.logE
+import toy.project.davidoh.summercodingcalendar.util.decorator.SaturdayDecorator
+import toy.project.davidoh.summercodingcalendar.util.decorator.SunDayDecorator
+import toy.project.davidoh.summercodingcalendar.util.decorator.TodayDecorator
+import toy.project.davidoh.summercodingcalendar.util.nowLocalDate
 
 class MonthlyFragment : Fragment(),
         MonthlyContractor.View,
@@ -45,17 +48,32 @@ class MonthlyFragment : Fragment(),
         super.onViewCreated(view, savedInstanceState)
         cacheFragment()
         initWidget()
-
     }
 
     override fun onResume() {
         super.onResume()
-        monthlyPresenter.loadSchedulesAllDay()
+        mcv_monthly.apply {
+            currentDate = cachedSelectedDate
+            selectedDate = cachedSelectedDate
+            selectionColor = resources.getColor(R.color.colorAccent)
+        }
+        monthlyPresenter.drawEventsOnCalendar()
     }
 
     private fun initWidget() {
-        material_claendar.setViewInit(CalendarMode.MONTHS).apply {
+        mcv_monthly.apply {
+            state().edit()
+                    .setMinimumDate(CalendarDay.from(1992, 7, 11))
+                    .setMaximumDate(CalendarDay.from(2099, 7, 11))
+                    .setCalendarDisplayMode(CalendarMode.MONTHS)
+                    .commit()
+
+            setTitleFormatter { calendarDay -> "${calendarDay.year}년 ${calendarDay.month}월" }
             setOnDateChangedListener(this@MonthlyFragment)
+            addDecorators(SaturdayDecorator(),
+                    SunDayDecorator() ,
+                    TodayDecorator(CalendarDay.from(nowLocalDate()))
+            )
         }
     }
 
@@ -76,7 +94,7 @@ class MonthlyFragment : Fragment(),
     }
 
     override fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>) {
-        material_claendar.addDecorator(
+        mcv_monthly.addDecorator(
                 EventDecorator(
                         Color.BLACK,
                         schedules
@@ -88,6 +106,12 @@ class MonthlyFragment : Fragment(),
         cachedSelectedDate = date
     }
 
+    override fun destroy() {
+        INSTANCE?.let {
+            INSTANCE = null
+        }
+    }
+
     companion object {
         private var INSTANCE: MonthlyFragment? = null
 
@@ -96,10 +120,6 @@ class MonthlyFragment : Fragment(),
                 return MonthlyFragment()
             }
             return INSTANCE!!
-        }
-
-        fun destroyInstance() {
-            INSTANCE = null
         }
     }
 }

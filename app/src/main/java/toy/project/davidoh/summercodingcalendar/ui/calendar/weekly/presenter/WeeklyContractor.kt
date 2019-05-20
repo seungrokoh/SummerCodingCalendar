@@ -14,10 +14,12 @@ interface WeeklyContractor {
         fun showScheduleEmptyView()
 
         fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>)
+
+        fun destroy()
     }
 
     interface Presenter {
-        fun loadSchedulesAllDay()
+        fun drawEventsOnCalendar()
 
         fun getSchedulesOnDay(date: CalendarDay)
     }
