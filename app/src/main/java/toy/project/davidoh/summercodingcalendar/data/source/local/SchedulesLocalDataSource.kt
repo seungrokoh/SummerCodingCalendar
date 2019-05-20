@@ -40,18 +40,8 @@ class SchedulesLocalDataSource(private val appExecutors: AppExecutors,
 
     }
 
-    override fun addSchedule(schedule: Schedule, callback: SchedulesDataSource.InsertScheduleCallback) {
-        CoroutineScope(Dispatchers.Main).launch {
-            var result: Long = -1
-            CoroutineScope(Dispatchers.IO).async {
-                result = schedulesDao.addSchedule(schedule)
-            }.await()
-            if (result > 0) {
-                callback.onScheduleInserted()
-            } else {
-                callback.onInsertFailed()
-            }
-        }
+    override suspend fun addSchedule(schedule: Schedule) = withContext(appExecutors.ioContext) {
+        schedulesDao.addSchedule(schedule)
     }
 
     override fun refreshSchedules() {

@@ -43,26 +43,21 @@ class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDa
         }
     }
 
-    override fun addSchedule(schedule: Schedule, callback: SchedulesDataSource.InsertScheduleCallback) {
-        cacheAndPerform(schedule) {
-            schedulesLocalDataSource.addSchedule(it, object : SchedulesDataSource.InsertScheduleCallback {
-                override fun onScheduleInserted() {
-                    refreshSchedules()
-                    callback.onScheduleInserted()
-                }
-
-                override fun onInsertFailed() {
-                    deleteScheduleWithId(it.id)
-                    callback.onInsertFailed()
-                }
-
-            })
+    override suspend fun addSchedule(schedule: Schedule) : Long {
+        cacheSchedule(schedule).let {
+            val result = schedulesLocalDataSource.addSchedule(it)
+            if (result > 0) {
+                refreshSchedules()
+            } else {
+                deleteScheduleWithId(it.id)
+            }
+            return result
         }
     }
 
-    private inline fun cacheAndPerform(schedule: Schedule, perform: (Schedule) -> Unit) {
+    private fun cacheSchedule(schedule: Schedule) : Schedule {
         cachedSchedules[schedule.id] = schedule
-        perform(schedule)
+        return schedule
     }
 
     override fun refreshSchedules() {
@@ -72,7 +67,7 @@ class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDa
     private fun refreshCache(schedules: List<Schedule>) {
         cachedSchedules.clear()
         schedules.forEach {
-            cacheAndPerform(it){}
+            cacheSchedule(it)
         }
         cacheIsDirty = false
     }
