@@ -18,6 +18,7 @@ import toy.project.davidoh.summercodingcalendar.ui.calendar.daily.presenter.Dail
 import toy.project.davidoh.summercodingcalendar.ui.calendar.daily.presenter.DailyPresenter
 import toy.project.davidoh.summercodingcalendar.util.Injection
 import toy.project.davidoh.summercodingcalendar.util.SharedPreferenceUtil
+import toy.project.davidoh.summercodingcalendar.util.logE
 
 class DailyFragment : Fragment(), DailyContractor.View {
 
@@ -45,6 +46,7 @@ class DailyFragment : Fragment(), DailyContractor.View {
 
     override fun onResume() {
         super.onResume()
+        logE("Daily onResume")
         dailyPresenter.getSchedulesOnDay()
     }
 
@@ -95,6 +97,11 @@ class DailyFragment : Fragment(), DailyContractor.View {
         tv_date.text = getCurrentDayToString()
     }
 
+    override fun destroy() {
+        INSTANCE?.let {
+            INSTANCE = null
+        }
+    }
 
     private fun getCurrentDayToString(): String = "${cachedSelectedDate?.year}년 " +
             "${cachedSelectedDate?.month}월 " +
@@ -109,10 +116,6 @@ class DailyFragment : Fragment(), DailyContractor.View {
                 INSTANCE = DailyFragment()
             }
             return INSTANCE!!
-        }
-
-        fun destroyInstance() {
-            INSTANCE = null
         }
     }
 }
