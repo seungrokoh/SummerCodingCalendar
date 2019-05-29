@@ -59,16 +59,23 @@ class WeeklyPresenter(
         view.showDecorateOnCalendar(dateList)
     }
 
+    private fun deleteDecoratorOncalendar(date: CalendarDay) {
+        view.deleteDecorateOnCalendar(date)
+    }
+
     override fun deleteSchedule(position: Int) = launchSilent(uiContext) {
         val result = schedulesRepository.deleteSchedule(scheduleModel.getItem(position))
 
         if (result > 0) {
             if (view.isActive) {
                 view.showSuccessMessage("삭제 완료")
+                val schedule = scheduleModel.getItem(position)
+
                 scheduleModel.removeItem(position)
                 scheduleModel.notifyDataSetChange()
                 if (scheduleModel.isEmpty()) {
                     view.showScheduleEmptyView()
+                    deleteDecoratorOncalendar(schedule.date)
                 }
             }
         } else {

@@ -9,25 +9,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import com.prolificinteractive.materialcalendarview.CalendarMode
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
+import com.prolificinteractive.materialcalendarview.*
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_weekly.*
 import toy.project.davidoh.summercodingcalendar.Global.PREF_KEY_LAST_FRAGMENT
 import toy.project.davidoh.summercodingcalendar.Global.PREF_WEEKLY
 import toy.project.davidoh.summercodingcalendar.Global.cachedSelectedDate
 import toy.project.davidoh.summercodingcalendar.R
+import toy.project.davidoh.summercodingcalendar.data.Schedule
 import toy.project.davidoh.summercodingcalendar.ui.calendar.adapter.SchedulesListAdapter
 import toy.project.davidoh.summercodingcalendar.ui.calendar.weekly.presenter.WeeklyContractor
 import toy.project.davidoh.summercodingcalendar.ui.calendar.weekly.presenter.WeeklyPresenter
 import toy.project.davidoh.summercodingcalendar.util.Injection
 import toy.project.davidoh.summercodingcalendar.util.SharedPreferenceUtil
-import toy.project.davidoh.summercodingcalendar.util.decorator.EventDecorator
-import toy.project.davidoh.summercodingcalendar.util.decorator.SaturdayDecorator
-import toy.project.davidoh.summercodingcalendar.util.decorator.SunDayDecorator
-import toy.project.davidoh.summercodingcalendar.util.decorator.TodayDecorator
+import toy.project.davidoh.summercodingcalendar.util.decorator.*
 import toy.project.davidoh.summercodingcalendar.util.logE
 import toy.project.davidoh.summercodingcalendar.util.nowLocalDate
 
@@ -48,6 +43,8 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
     private val schedulesAdapter: SchedulesListAdapter by lazy {
         SchedulesListAdapter(this@WeeklyFragment.context!!)
     }
+
+    private lateinit var decorator: EventDecorator
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_weekly, container, false)
@@ -128,12 +125,16 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
     }
 
     override fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>) {
+        decorator = EventDecorator(Color.BLACK, schedules)
         mcv_weekly.addDecorator(
-            EventDecorator(
-                Color.BLACK,
-                schedules
-            )
+            decorator
         )
+    }
+
+    override fun deleteDecorateOnCalendar(date: CalendarDay) {
+        decorator.deleteDecorateOnDay(date)
+        mcv_weekly.addDecorator(decorator)
+        mcv_weekly.invalidateDecorators()
     }
 
     override fun showDeleteDialog(position: Int) {

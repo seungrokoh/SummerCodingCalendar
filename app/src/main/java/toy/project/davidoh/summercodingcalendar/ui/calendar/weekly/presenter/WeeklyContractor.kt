@@ -1,6 +1,7 @@
 package toy.project.davidoh.summercodingcalendar.ui.calendar.weekly.presenter
 
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import toy.project.davidoh.summercodingcalendar.data.Schedule
 
 interface WeeklyContractor {
     interface View {
@@ -14,6 +15,7 @@ interface WeeklyContractor {
         fun showScheduleEmptyView()
 
         fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>)
+        fun deleteDecorateOnCalendar(date: CalendarDay)
 
         fun showDeleteDialog(position: Int)
 
