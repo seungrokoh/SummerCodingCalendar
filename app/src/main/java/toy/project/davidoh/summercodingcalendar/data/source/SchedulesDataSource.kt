@@ -11,5 +11,7 @@ interface SchedulesDataSource {
 
     suspend fun addSchedule(schedule: Schedule): Long
 
+    suspend fun deleteSchedule(schedule: Schedule) : Int
+
     fun refreshSchedules()
 }

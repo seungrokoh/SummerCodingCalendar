@@ -9,7 +9,11 @@ interface ScheduleModel {
 
     fun getItemCount(): Int
 
+    fun removeItem(position: Int)
+
     fun notifyDataSetChange()
+
+    fun isEmpty() : Boolean
 
     fun clear()
 

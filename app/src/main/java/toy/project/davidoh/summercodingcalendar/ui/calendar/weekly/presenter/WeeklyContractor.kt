@@ -15,6 +15,8 @@ interface WeeklyContractor {
 
         fun showDecorateOnCalendar(schedules: MutableList<CalendarDay>)
 
+        fun showDeleteDialog(position: Int)
+
         fun destroy()
     }
 
@@ -22,5 +24,7 @@ interface WeeklyContractor {
         fun drawEventsOnCalendar()
 
         fun getSchedulesOnDay(date: CalendarDay)
+
+        fun deleteSchedule(position: Int)
     }
 }

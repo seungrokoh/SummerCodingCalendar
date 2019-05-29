@@ -32,8 +32,17 @@ class SchedulesListAdapter(private val context: Context) : RecyclerView.Adapter<
         return scheduleList.size
     }
 
+    override fun removeItem(position: Int) {
+        scheduleList.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     override fun notifyDataSetChange() {
         notifyDataSetChanged()
+    }
+
+    override fun isEmpty(): Boolean {
+        return scheduleList.isEmpty()
     }
 
     override fun clear() {

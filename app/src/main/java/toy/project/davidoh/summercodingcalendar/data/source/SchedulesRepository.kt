@@ -6,7 +6,6 @@ import toy.project.davidoh.summercodingcalendar.data.source.local.SchedulesLocal
 
 class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDataSource)
     : SchedulesDataSource {
-
     var cachedSchedules: LinkedHashMap<String, Schedule> = LinkedHashMap()
 
     var cacheIsDirty = false
@@ -53,6 +52,15 @@ class SchedulesRepository(private val schedulesLocalDataSource: SchedulesLocalDa
             }
             return result
         }
+    }
+
+    override suspend fun deleteSchedule(schedule: Schedule): Int {
+        val result = schedulesLocalDataSource.deleteSchedule(schedule)
+        if (result > 0) {
+            deleteScheduleWithId(schedule.id)
+            refreshSchedules()
+        }
+        return result
     }
 
     private fun cacheSchedule(schedule: Schedule) : Schedule {

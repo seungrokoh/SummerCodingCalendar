@@ -17,7 +17,7 @@ class DailyPresenter(private val view: DailyContractor.View,
     : DailyContractor.Presenter {
     init {
         scheduleModel.onclick = { position ->
-            // 일정 삭제, 수정 기능 추가시 사용
+            view.showDeleteDialog(position)
         }
     }
 
@@ -36,6 +36,25 @@ class DailyPresenter(private val view: DailyContractor.View,
             if (view.isActive) {
                 scheduleModel.notifyDataSetChange()
                 view.showScheduleEmptyView()
+            }
+        }
+    }
+
+    override fun deleteSchedule(position: Int) = launchSilent(uiContext) {
+        val result = schedulesRepository.deleteSchedule(scheduleModel.getItem(position))
+
+        if (result > 0) {
+            if (view.isActive) {
+                view.showSuccessMessage("삭제 완료")
+                scheduleModel.removeItem(position)
+                scheduleModel.notifyDataSetChange()
+                if (scheduleModel.isEmpty()) {
+                    view.showScheduleEmptyView()
+                }
+            }
+        } else {
+            if (view.isActive) {
+                view.showErrorMesage("삭제 실패")
             }
         }
     }

@@ -13,11 +13,14 @@ interface DailyContractor {
 
         fun showCurrentDate()
 
+        fun showDeleteDialog(position: Int)
+
         fun destroy()
     }
 
     interface Presenter {
         fun getSchedulesOnDay()
+        fun deleteSchedule(position: Int)
 
         fun movePreDay()
         fun moveNextDay()

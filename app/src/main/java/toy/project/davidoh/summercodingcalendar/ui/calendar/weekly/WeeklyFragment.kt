@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -133,6 +134,15 @@ class WeeklyFragment : Fragment(), WeeklyContractor.View,
                 schedules
             )
         )
+    }
+
+    override fun showDeleteDialog(position: Int) {
+        val builder = AlertDialog.Builder(this@WeeklyFragment.context!!)
+        builder.setTitle("일정 삭제")
+        builder.setMessage("선택한 일정을 삭제하시겠어요?")
+        builder.setPositiveButton("삭제") { dialog, which -> weeklyPresenter.deleteSchedule(position) }
+        builder.setNegativeButton("취소") { dialog, which ->  }
+        builder.show()
     }
 
     override fun destroy() {

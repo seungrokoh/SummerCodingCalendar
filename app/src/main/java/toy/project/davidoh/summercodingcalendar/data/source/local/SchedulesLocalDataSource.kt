@@ -10,7 +10,6 @@ import toy.project.davidoh.summercodingcalendar.util.AppExecutors
 
 class SchedulesLocalDataSource(private val appExecutors: AppExecutors,
                                private val schedulesDao: SchedulesDao) : SchedulesDataSource {
-
     override suspend fun getSchedulesAllDay(): Result<List<Schedule>> = withContext(appExecutors.ioContext) {
         val list = async { schedulesDao.getAllSchedules() }
         try {
@@ -42,6 +41,10 @@ class SchedulesLocalDataSource(private val appExecutors: AppExecutors,
 
     override suspend fun addSchedule(schedule: Schedule) = withContext(appExecutors.ioContext) {
         schedulesDao.addSchedule(schedule)
+    }
+
+    override suspend fun deleteSchedule(schedule: Schedule) = withContext(appExecutors.ioContext) {
+        schedulesDao.deleteSchedule(schedule)
     }
 
     override fun refreshSchedules() {
